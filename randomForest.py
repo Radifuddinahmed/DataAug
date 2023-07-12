@@ -1,7 +1,7 @@
 # Importing the libraries
 import numpy as np # for array operations
 import pandas as pd # for working with DataFrames
-import requests, io # for HTTP requests and I/O commands
+
 import matplotlib.pyplot as plt # for data visualization
 
 
