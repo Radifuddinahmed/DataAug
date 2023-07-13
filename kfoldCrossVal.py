@@ -23,33 +23,73 @@ print(rf_model.score(X_test, y_test))
 #print(Y_pred)
 
 #k-fold Cross Validation
+
 from sklearn.model_selection import cross_val_score
 scores = cross_val_score(rf_model, X, y, cv=10)
 print(scores)
 print(scores.mean())
 
 
-#calculate correlation coefficient
-correlation_matrix = np.corrcoef(X_train.T, y_train.T)
-correlation_coefficient = correlation_matrix[0, 1]  # Assuming X and y have shape (n_samples,)
-print("Correlation coefficient:", correlation_coefficient)
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.linear_model import LinearRegression
 
-#Calculate MAE
-from sklearn.metrics import mean_absolute_error
-# Calculate the Mean Absolute Error
-mae = mean_absolute_error(y_test, Y_pred)
-print("Mean Absolute Error:", mae)
+# Assuming you have your data X and y
+df = pd.read_csv("filtered_dataset_no_outlier.csv")
+X = df[['Tool Rotational Speed (RPM)', 'Translational Speed (mm/min)', 'Axial Force (KN)']].values
+y = df['Ultimate Tensile Trength (MPa)'].values
+k = 10
+# Create your regression model
+model = LinearRegression()
 
-#calculate RMSE
-from sklearn.metrics import mean_squared_error
-mse = mean_squared_error(y_test, Y_pred)
-rmse = np.sqrt(mse)
-print("Root Mean Squared Error:", rmse)
+# Perform k-fold cross-validation and calculate evaluation metrics
+mse_scores = -cross_val_score(model, X, y, cv=k, scoring='neg_mean_squared_error')
+rmse_scores = np.sqrt(mse_scores)
+mae_scores = -cross_val_score(model, X, y, cv=k, scoring='neg_mean_absolute_error')
 
-# Calculate the RAE
-rae = np.mean(np.abs(y_test - Y_pred)) / np.mean(np.abs(y_test - np.mean(y_test)))
-print("Relative Absolute Error (RAE):", rae)
 
-# Calculate the RRSE
-rrse = np.sqrt(np.sum((y_test - Y_pred)**2) / np.sum((y_test - np.mean(y_test))**2))
-print("Relative Root Squared Error (RRSE):", rrse)
+# Print the evaluation metrics
+
+print("Root Mean Squared Error (RMSE):", np.mean(rmse_scores))
+print("Mean Absolute Error (MAE):", np.mean(mae_scores))
+
+
+# Perform k-fold cross-validation and calculate MAE
+mae_scores = -cross_val_score(model, X, y, cv=k, scoring='neg_mean_absolute_error')
+
+# Print the mean absolute error
+print("Mean Absolute Error (MAE):", np.mean(mae_scores))
+
+from sklearn.metrics import r2_score
+from sklearn.model_selection import cross_val_predict
+# Train your model and generate predictions using k-fold cross-validation
+predicted = cross_val_predict(model, X, y, cv=k)
+# Calculate the correlation coefficient (R-squared)
+correlation_coefficient = -r2_score(y, predicted)
+# Print the correlation coefficient
+print("Correlation Coefficient (R-squared):", correlation_coefficient)
+
+
+
+# Calculate the absolute errors
+absolute_errors = np.abs(y - predicted)
+# Calculate the mean absolute error
+mean_absolute_error = np.mean(absolute_errors)
+# Calculate the mean of the true values
+mean_true_values = np.mean(y)
+# Calculate the relative absolute error
+relative_absolute_error = mean_absolute_error / mean_true_values
+# Print the relative absolute error
+print("Relative Absolute Error (RAE):", relative_absolute_error)
+
+
+# Calculate the squared errors
+squared_errors = np.square(y - predicted)
+# Calculate the mean squared error
+mean_squared_error = np.mean(squared_errors)
+# Calculate the mean of the true values
+mean_true_values = np.mean(y)
+# Calculate the root relative squared error
+root_relative_squared_error = np.sqrt(mean_squared_error) / mean_true_values
+# Print the root relative squared error
+print("Root Relative Squared Error (RRSE):", root_relative_squared_error)
