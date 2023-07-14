@@ -1,7 +1,7 @@
 # Importing the libraries
 import numpy as np # for array operations
 import pandas as pd # for working with DataFrames
-import requests, io # for HTTP requests and I/O commands
+
 import matplotlib.pyplot as plt # for data visualization
 
 
@@ -16,9 +16,12 @@ y = df['Ultimate Tensile Trength (MPa)'].values
 
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+
+
 from sklearn.ensemble import RandomForestClassifier
 rf_model = RandomForestRegressor(n_estimators=10,  random_state=0)
-rf_model.fit(X, y)
+rf_model.fit(X_train, y_train)
 Y_pred =  rf_model.predict(X_test)
 
 # Make data frame of above data
