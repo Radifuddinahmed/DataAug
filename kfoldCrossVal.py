@@ -1,14 +1,14 @@
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_predict
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.linear_model import LinearRegression
-
 from sklearn.metrics import r2_score
-from sklearn.model_selection import cross_val_predict
+
 
 # Assuming you have your data X and y
-df = pd.read_csv("filtered_dataset_no_outlier.csv")
+df = pd.read_csv("filtered_dataset_no_outlier_polynomial.csv")
 X = df[['Tool Rotational Speed (RPM)', 'Translational Speed (mm/min)', 'Axial Force (KN)']].values
 y = df['Ultimate Tensile Trength (MPa)'].values
 k = 10
@@ -29,7 +29,6 @@ print("Correlation Coefficient (R-squared):", correlation_coefficient)
 #Mean Absolute Error
 mae_scores = -cross_val_score(model, X, y, cv=k, scoring='neg_mean_absolute_error')
 print("Mean Absolute Error (MAE):", np.mean(mae_scores))
-
 
 # Root Mean Squared Error
 mse_scores = -cross_val_score(model, X, y, cv=k, scoring='neg_mean_squared_error')
@@ -240,7 +239,11 @@ print("\n")
 
 # Random Forest Regressor
 from sklearn.ensemble import RandomForestRegressor # for building the model
-
+# Assuming you have your data X and y
+df = pd.read_csv("filtered_dataset_no_outlier_polynomial.csv")
+X = df[['Tool Rotational Speed (RPM)', 'Translational Speed (mm/min)', 'Axial Force (KN)']].values
+y = df['Ultimate Tensile Trength (MPa)'].values
+k = 10
 model_rf = RandomForestRegressor(n_estimators=20,  random_state=0)
 print("Random Forest Regressor \n")
 

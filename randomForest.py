@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split # for splitting the data
 from sklearn.metrics import mean_squared_error # for calculating the cost function
 from sklearn.ensemble import RandomForestRegressor # for building the model
 
-df = pd.read_csv("filtered_dataset_no_outlier.csv")
+df = pd.read_csv("FSW_Dataset_v4_test.csv")
 X = df[['Tool Rotational Speed (RPM)', 'Translational Speed (mm/min)', 'Axial Force (KN)']].values
 y = df['Ultimate Tensile Trength (MPa)'].values
 
@@ -20,7 +20,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 
 from sklearn.ensemble import RandomForestClassifier
-rf_model = RandomForestRegressor(n_estimators=10,  random_state=0)
+rf_model = RandomForestRegressor(n_estimators=11,  random_state=0)
 rf_model.fit(X_train, y_train)
 Y_pred =  rf_model.predict(X_test)
 
@@ -35,6 +35,7 @@ panda_data.to_csv('YPred.csv', mode='a', index=False, header=False)
 # print message
 print("Data appended successfully.")
 
+#X_train.T, y_train.T
 
 #calculate correlation coefficient
 correlation_matrix = np.corrcoef(X_train.T, y_train.T)

@@ -15,3 +15,4 @@ heatmap = sns.heatmap(well_data.corr(), vmin=-1, vmax=1, annot=True, cmap='BrBG'
 heatmap.set_title('  ', fontdict={'fontsize':6}, pad=22)
 
 plt.savefig('heatmap.png', dpi=300, bbox_inches='tight')
+
