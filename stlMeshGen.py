@@ -13,9 +13,12 @@ x2d, y2d = np.meshgrid(x,y, indexing= 'xy')
 x3d, y3d, z3d = np.meshgrid(x,y,z, indexing= 'xy')
 
 mask = (x3d**2 + y3d**2 >= z3d) * (x3d**2 + y3d**2 <= 1.5*z3d)
+mask[:,:,-1] = 0
+mask[:,:,0] = 0
 plt.figure(figsize=(5,5))
 plt.pcolormesh(x2d, y2d, mask[:,:,20])
 plt.show()
+
 verts, faces, normals, values = measure.marching_cubes(mask,0)
 obj_3d = mesh.Mesh(np.zeros(faces.shape[0], dtype=mesh.Mesh.dtype))
 

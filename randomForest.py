@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split # for splitting the data
 from sklearn.metrics import mean_squared_error # for calculating the cost function
 from sklearn.ensemble import RandomForestRegressor # for building the model
 
-df = pd.read_csv("FSW_Dataset_v4_test.csv")
+df = pd.read_csv("filtered_dataset_no_outlier_polynomial.csv")
 X = df[['Tool Rotational Speed (RPM)', 'Translational Speed (mm/min)', 'Axial Force (KN)']].values
 y = df['Ultimate Tensile Trength (MPa)'].values
 

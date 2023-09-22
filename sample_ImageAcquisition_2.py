@@ -78,6 +78,7 @@ def main():
         sys.exit()
 
     # PreStart Hi-Speed Communication
+
     req = LJXAwrap.LJX8IF_HIGH_SPEED_PRE_START_REQ()
     req.bySendPosition = 2
     profinfo = LJXAwrap.LJX8IF_PROFILE_INFO()
@@ -227,6 +228,19 @@ def main():
         plt.ylim(plotz_min, plotz_max)
 
         ax3.plot(x_val_mm, z_val_mm)
+
+        #saving the data into CSV file
+        import pandas as pd
+        df_new = pd.DataFrame(
+            {
+                'x val': x_val_mm,
+                'z val': z_val_mm
+            }
+        )
+
+        # Save the DataFrame to a CSV file
+        df_new.to_csv('laserProfilerDataset.csv', index=False)
+
 
         plt.title("Height Profile")
 
