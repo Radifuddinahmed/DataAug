@@ -8,10 +8,24 @@ from sklearn.metrics import r2_score
 
 
 # Assuming you have your data X and y
-df = pd.read_csv("filtered_dataset_no_outlier_polynomial.csv")
+df = pd.read_csv("FSW_dataset_Original.csv")
 X = df[['Tool Rotational Speed (RPM)', 'Translational Speed (mm/min)', 'Axial Force (KN)']].values
 y = df['Ultimate Tensile Trength (MPa)'].values
 k = 10
+
+c1 = [0,0,0]
+c2 = [0,0,0]
+c3 = [0,0,0]
+c4 = [0,0,0]
+c5 = [0,0,0]
+c6 = [0,0,0]
+opt_data = {'Model': c1,
+            'Correlation Coefficient': c2,
+            'MAE': c3,
+            'RMSE': c4,
+            'RAE': c5,
+            'RRSE':c6 }
+opt = pd.DataFrame(opt_data)
 
 # Gaussian Process Regression
 from sklearn.gaussian_process import GaussianProcessRegressor
@@ -58,6 +72,14 @@ root_relative_squared_error = np.sqrt(mean_squared_error) / mean_true_values
 print("Root Relative Squared Error (RRSE):", root_relative_squared_error)
 print("\n")
 
+opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "Random Forest",
+                                                'Correlation Coefficient': correlation_coefficient,
+                                                  'MAE': (mae_scores[-1]),
+                                                  'RMSE': (rmse_scores[-1]),
+                                                  'RAE': relative_absolute_error,
+                                                  'RRSE':root_relative_squared_error }])])
+
+
 
 # Linear Regression
 model = LinearRegression()
@@ -99,6 +121,13 @@ root_relative_squared_error = np.sqrt(mean_squared_error) / mean_true_values
 # Print the root relative squared error
 print("Root Relative Squared Error (RRSE):", root_relative_squared_error)
 print("\n")
+
+opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "Linear Regression",
+                                                'Correlation Coefficient': correlation_coefficient,
+                                                  'MAE': (mae_scores[-1]),
+                                                  'RMSE': (rmse_scores[-1]),
+                                                  'RAE': relative_absolute_error,
+                                                  'RRSE':root_relative_squared_error }])])
 
 
 #polynomial regression  - error
@@ -148,6 +177,15 @@ root_relative_squared_error = np.sqrt(mean_squared_error) / mean_true_values
 print("Root Relative Squared Error (RRSE):", root_relative_squared_error)
 print("\n")
 
+opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "Polynomial Regression",
+                                                'Correlation Coefficient': correlation_coefficient,
+                                                  'MAE': (mae_scores[-1]),
+                                                  'RMSE': (rmse_scores[-1]),
+                                                  'RAE': relative_absolute_error,
+                                                  'RRSE':root_relative_squared_error }])])
+
+
+
 #SVM Regression
 from sklearn.svm import SVR
 
@@ -193,6 +231,16 @@ print("Root Relative Squared Error (RRSE):", root_relative_squared_error)
 print("\n")
 
 
+opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "SVM Regression",
+                                                'Correlation Coefficient': correlation_coefficient,
+                                                  'MAE': (mae_scores[-1]),
+                                                  'RMSE': (rmse_scores[-1]),
+                                                  'RAE': relative_absolute_error,
+                                                  'RRSE':root_relative_squared_error }])])
+
+
+
+
 #KNN
 from sklearn.neighbors import KNeighborsRegressor
 model_KNN = KNeighborsRegressor(n_neighbors=2)
@@ -236,13 +284,22 @@ root_relative_squared_error = np.sqrt(mean_squared_error) / mean_true_values
 print("Root Relative Squared Error (RRSE):", root_relative_squared_error)
 print("\n")
 
+opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "KNN",
+                                                'Correlation Coefficient': correlation_coefficient,
+                                                  'MAE': (mae_scores[-1]),
+                                                  'RMSE': (rmse_scores[-1]),
+                                                  'RAE': relative_absolute_error,
+                                                  'RRSE':root_relative_squared_error }])])
 
-# Random Forest Regressor
+
+
+
+###### Random Forest Regressor #######
 from sklearn.ensemble import RandomForestRegressor # for building the model
 # Assuming you have your data X and y
-df = pd.read_csv("filtered_dataset_no_outlier_polynomial.csv")
-X = df[['Tool Rotational Speed (RPM)', 'Translational Speed (mm/min)', 'Axial Force (KN)']].values
-y = df['Ultimate Tensile Trength (MPa)'].values
+# df = pd.read_csv("filtered_dataset_no_outlier_polynomial.csv")
+# X = df[['Tool Rotational Speed (RPM)', 'Translational Speed (mm/min)', 'Axial Force (KN)']].values
+# y = df['Ultimate Tensile Trength (MPa)'].values
 k = 10
 model_rf = RandomForestRegressor(n_estimators=20,  random_state=0)
 print("Random Forest Regressor \n")
@@ -253,12 +310,12 @@ correlation_coefficient = -r2_score(y, predicted)
 print("Correlation Coefficient (R-squared):", correlation_coefficient)
 
 #Mean Absolute Error
-mae_scores = -cross_val_score(model, X, y, cv=k, scoring='neg_mean_absolute_error')
+mae_scores = -cross_val_score(model_rf, X, y, cv=k, scoring='neg_mean_absolute_error')
 print("Mean Absolute Error (MAE):", np.mean(mae_scores))
 
 
 # Root Mean Squared Error
-mse_scores = -cross_val_score(model, X, y, cv=k, scoring='neg_mean_squared_error')
+mse_scores = -cross_val_score(model_rf, X, y, cv=k, scoring='neg_mean_squared_error')
 rmse_scores = np.sqrt(mse_scores)
 print("Root Mean Squared Error (RMSE):", np.mean(rmse_scores))
 
@@ -284,3 +341,88 @@ root_relative_squared_error = np.sqrt(mean_squared_error) / mean_true_values
 # Print the root relative squared error
 print("Root Relative Squared Error (RRSE):", root_relative_squared_error)
 print("\n")
+
+print(type(mae_scores))
+print("size:", mae_scores.size)
+print("shape:", mae_scores.shape)
+print("dimension:", mae_scores.ndim)
+print("datatype:", mae_scores.dtype)
+
+print(type(rmse_scores))
+
+
+
+
+
+
+opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "Random Forest",
+                                                'Correlation Coefficient': correlation_coefficient,
+                                                  'MAE': (mae_scores[-1]),
+                                                  'RMSE': (rmse_scores[-1]),
+                                                  'RAE': relative_absolute_error,
+                                                  'RRSE':root_relative_squared_error }])])
+
+
+##### Multilayer perception #####
+
+from sklearn.neural_network import MLPRegressor
+
+model_nn = MLPRegressor(
+    activation='relu',
+    hidden_layer_sizes=(10, 100),
+    alpha=0.001,
+    random_state=20,
+    early_stopping=False
+)
+
+
+print("Multi Layer Perception Regressor \n")
+
+# Correlation Coefficient
+predicted = cross_val_predict(model_nn, X, y, cv=k)
+correlation_coefficient = -r2_score(y, predicted)
+print("Correlation Coefficient (R-squared):", correlation_coefficient)
+
+#Mean Absolute Error
+mae_scores = -cross_val_score(model_nn, X, y, cv=k, scoring='neg_mean_absolute_error')
+print("Mean Absolute Error (MAE):", np.mean(mae_scores))
+
+
+# Root Mean Squared Error
+mse_scores = -cross_val_score(model_nn, X, y, cv=k, scoring='neg_mean_squared_error')
+rmse_scores = np.sqrt(mse_scores)
+print("Root Mean Squared Error (RMSE):", np.mean(rmse_scores))
+
+# Relative Absolute Error
+absolute_errors = np.abs(y - predicted)
+# Calculate the mean absolute error
+mean_absolute_error = np.mean(absolute_errors)
+# Calculate the mean of the true values
+mean_true_values = np.mean(y)
+# Calculate the relative absolute error
+relative_absolute_error = mean_absolute_error / mean_true_values
+# Print the relative absolute error
+print("Relative Absolute Error (RAE):", relative_absolute_error)
+
+# Calculate the squared errors
+squared_errors = np.square(y - predicted)
+# Calculate the mean squared error
+mean_squared_error = np.mean(squared_errors)
+# Calculate the mean of the true values
+mean_true_values = np.mean(y)
+# Calculate the root relative squared error
+root_relative_squared_error = np.sqrt(mean_squared_error) / mean_true_values
+# Print the root relative squared error
+print("Root Relative Squared Error (RRSE):", root_relative_squared_error)
+print("\n")
+
+opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "Multilayer Perception",
+                                                'Correlation Coefficient': correlation_coefficient,
+                                                  'MAE': (mae_scores[-1]),
+                                                  'RMSE': (rmse_scores[-1]),
+                                                  'RAE': relative_absolute_error,
+                                                  'RRSE':root_relative_squared_error }])])
+
+
+
+opt.to_csv('All_ML_models_Results.csv', index=False)

@@ -5,7 +5,7 @@
 import cv2
 
 # Open the video file
-video_path = 'aav4687s1.MOV'  # Replace with your video file path
+video_path = 'aav4687s1.mov'  # Replace with your video file path
 cap = cv2.VideoCapture(video_path)
 
 # Check if the video file was opened successfully
@@ -42,7 +42,7 @@ cap.release()
 
 print(f"Frames extracted: {frame_count}")
 
-vid = cv2.VideoCapture( 'aav4687s1.MOV')
+vid = cv2.VideoCapture( 'aav4687s1.mov')
 height = vid.get(cv2.CAP_PROP_FRAME_HEIGHT) # always 0 in Linux python3
 width  = vid.get(cv2.CAP_PROP_FRAME_WIDTH)  # always 0 in Linux python3
 print ("opencv: height:{} width:{}".format( height, width))
