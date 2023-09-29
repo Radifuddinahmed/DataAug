@@ -6,17 +6,13 @@ from SALib.sample import saltelli
 from SALib.analyze import sobol
 import numpy as np
 
-# Load the dataset
-df = pd.read_csv('FSW_Dataset2.csv')
 
+# Assuming you have your data X and y
+df = pd.read_csv('Data Sheet Revised_CSV.csv')
+X = df[['Power', 'Scanning Speed', 'Layer Thickness','Spot Size','Porosity']].values
+y = df['Max Melt Pool Width'].values
 
-# Split the dataset into input features and target variable
-X = df.drop('strength', axis = 1)
-# X = df['rpm', 'speed', 'force']
-y = df['strength']
-
-# #X = df.drop('Ultimate Tensile Strength (MPa)', axis=1)
-# #y = df["Ultimate Tensile Strength (MPa)"]
+#,'Max Melt Pool Depth'
 
 # Normalize the input features to have zero mean and unit variance
 X = (X - X.mean()) / X.std()
@@ -30,9 +26,9 @@ model.fit(X_train, y_train)
 
 # Define the parameter ranges for sensitivity analysis using Saltelli sampling
 problem = {
-    'num_vars': 3,
-    'names': ['Tool Rotational Speed (RPM)', 'Translational Speed (mm/min)', 'Axial Force (KN)'],
-    'bounds': [[X_train.min().min(), X_train.max().max()]] * 3
+    'num_vars': 5,
+    'names': ['Power', 'Scanning Speed', 'Layer Thickness','Spot Size','Porosity'],
+    'bounds': [[X_train.min().min(), X_train.max().max()]] * 5
 }
 param_values = saltelli.sample(problem, 1000)
 
@@ -53,10 +49,12 @@ for i, name in enumerate(problem['names']):
     print(f"{name}: {Si['ST'][i]}")
 
     # Create a dictionary with the new dataset
-    data = {'Tool Rotational Speed (RPM)': new_X[:, 0],
-            'Translational Speed (mm/min)': new_X[:, 1],
-            'Axial Force (KN)': new_X[:, 2],
-            'Ultimate Tensile Trength (MPa)': new_y}
+    data = {'Power': new_X[:, 0],
+            'Scanning Speed': new_X[:, 1],
+            'Layer Thickness': new_X[:, 2],
+            'Spot Size': new_X[:, 3],
+            'Porosity': new_X[:, 4],
+            'Max Melt Pool Width': new_y[:,5]}
 
     # Ensure new_X is a 2-dimensional array
     if len(new_X.shape) == 1:
@@ -66,4 +64,4 @@ for i, name in enumerate(problem['names']):
     df_new = pd.DataFrame(data)
 
     # Save the DataFrame to a CSV file
-    df_new.to_csv('new_dataset.csv', index=False)
+    df_new.to_csv('SensitivityAnalysis_LPBF.csv', index=False)

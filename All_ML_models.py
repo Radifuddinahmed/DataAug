@@ -72,7 +72,7 @@ root_relative_squared_error = np.sqrt(mean_squared_error) / mean_true_values
 print("Root Relative Squared Error (RRSE):", root_relative_squared_error)
 print("\n")
 
-opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "Random Forest",
+opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "gaussian process",
                                                 'Correlation Coefficient': correlation_coefficient,
                                                   'MAE': (mae_scores[-1]),
                                                   'RMSE': (rmse_scores[-1]),
@@ -418,8 +418,8 @@ print("\n")
 
 opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "Multilayer Perception",
                                                 'Correlation Coefficient': correlation_coefficient,
-                                                  'MAE': (mae_scores[-1]),
-                                                  'RMSE': (rmse_scores[-1]),
+                                                  'MAE': (mae_scores),
+                                                  'RMSE': (rmse_scores),
                                                   'RAE': relative_absolute_error,
                                                   'RRSE':root_relative_squared_error }])])
 
