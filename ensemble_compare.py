@@ -12,9 +12,9 @@ from sklearn.ensemble import (
 )
 
 # Load the dataset as an example
-df = pd.read_csv("data.csv")
-X = df[['Tool Rotational Speed (RPM)', 'Translational Speed (mm/min)', 'Axial Force (KN)']].values
-y = df['Ultimate Tensile Trength (MPa)'].values
+df = pd.read_csv('LPBF_Dataset_Combined_python.csv')
+X = df[['Power', 'Scanning Speed', 'Layer Thickness','Spot Size','Porosity']].values
+y = df['Max Melt Pool Width'].values
 
 
 

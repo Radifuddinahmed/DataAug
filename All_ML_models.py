@@ -7,18 +7,24 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
 
+# # Assuming you have your data X and y
+# df = pd.read_csv("FSW_dataset_Original.csv")
+# X = df[['Tool Rotational Speed (RPM)', 'Translational Speed (mm/min)', 'Axial Force (KN)']].values
+# y = df['Ultimate Tensile Trength (MPa)'].values
+
 # Assuming you have your data X and y
-df = pd.read_csv("FSW_dataset_Original.csv")
-X = df[['Tool Rotational Speed (RPM)', 'Translational Speed (mm/min)', 'Axial Force (KN)']].values
-y = df['Ultimate Tensile Trength (MPa)'].values
+df = pd.read_csv('LPBF_Dataset_Combined_python.csv')
+X = df[['Power', 'Scanning Speed', 'Layer Thickness','Spot Size','Porosity']].values
+y = df['Max Melt Pool Width'].values
+
 k = 10
 
-c1 = [0,0,0]
-c2 = [0,0,0]
-c3 = [0,0,0]
-c4 = [0,0,0]
-c5 = [0,0,0]
-c6 = [0,0,0]
+c1 = []
+c2 = []
+c3 = []
+c4 = []
+c5 = []
+c6 = []
 opt_data = {'Model': c1,
             'Correlation Coefficient': c2,
             'MAE': c3,
@@ -37,7 +43,7 @@ print("Gaussian Regression \n")
 
 # Correlation Coefficient
 predicted = cross_val_predict(model, X, y, cv=k)
-correlation_coefficient = -r2_score(y, predicted)
+correlation_coefficient = r2_score(y, predicted)
 print("Correlation Coefficient (R-squared):", correlation_coefficient)
 
 #Mean Absolute Error
@@ -74,8 +80,8 @@ print("\n")
 
 opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "gaussian process",
                                                 'Correlation Coefficient': correlation_coefficient,
-                                                  'MAE': (mae_scores[-1]),
-                                                  'RMSE': (rmse_scores[-1]),
+                                                  'MAE': np.mean(mae_scores),
+                                                  'RMSE': np.mean(rmse_scores),
                                                   'RAE': relative_absolute_error,
                                                   'RRSE':root_relative_squared_error }])])
 
@@ -87,7 +93,7 @@ print("linear Regression \n")
 
 # Correlation Coefficient
 predicted = cross_val_predict(model, X, y, cv=k)
-correlation_coefficient = -r2_score(y, predicted)
+correlation_coefficient = r2_score(y, predicted)
 print("Correlation Coefficient (R-squared):", correlation_coefficient)
 
 #Mean Absolute Error
@@ -124,8 +130,8 @@ print("\n")
 
 opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "Linear Regression",
                                                 'Correlation Coefficient': correlation_coefficient,
-                                                  'MAE': (mae_scores[-1]),
-                                                  'RMSE': (rmse_scores[-1]),
+                                                  'MAE': np.mean(mae_scores),
+                                                  'RMSE': np.mean(rmse_scores),
                                                   'RAE': relative_absolute_error,
                                                   'RRSE':root_relative_squared_error }])])
 
@@ -142,7 +148,7 @@ poly_reg_model = LinearRegression()
 
 # Correlation Coefficient
 predicted = cross_val_predict(poly_reg_model, X, y, cv=k)
-correlation_coefficient = -r2_score(y, predicted)
+correlation_coefficient = r2_score(y, predicted)
 print("Correlation Coefficient (R-squared):", correlation_coefficient)
 
 #Mean Absolute Error
@@ -179,8 +185,8 @@ print("\n")
 
 opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "Polynomial Regression",
                                                 'Correlation Coefficient': correlation_coefficient,
-                                                  'MAE': (mae_scores[-1]),
-                                                  'RMSE': (rmse_scores[-1]),
+                                                  'MAE': np.mean(mae_scores),
+                                                  'RMSE': np.mean(rmse_scores),
                                                   'RAE': relative_absolute_error,
                                                   'RRSE':root_relative_squared_error }])])
 
@@ -194,7 +200,7 @@ print("Support Vector Machine \n")
 
 # Correlation Coefficient
 predicted = cross_val_predict(model_SVR, X, y, cv=k)
-correlation_coefficient = -r2_score(y, predicted)
+correlation_coefficient = r2_score(y, predicted)
 print("Correlation Coefficient (R-squared):", correlation_coefficient)
 
 #Mean Absolute Error
@@ -233,8 +239,8 @@ print("\n")
 
 opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "SVM Regression",
                                                 'Correlation Coefficient': correlation_coefficient,
-                                                  'MAE': (mae_scores[-1]),
-                                                  'RMSE': (rmse_scores[-1]),
+                                                  'MAE': np.mean(mae_scores),
+                                                  'RMSE': np.mean(rmse_scores),
                                                   'RAE': relative_absolute_error,
                                                   'RRSE':root_relative_squared_error }])])
 
@@ -248,7 +254,7 @@ print("KNN Regressor \n")
 
 # Correlation Coefficient
 predicted = cross_val_predict(model_KNN, X, y, cv=k)
-correlation_coefficient = -r2_score(y, predicted)
+correlation_coefficient = r2_score(y, predicted)
 print("Correlation Coefficient (R-squared):", correlation_coefficient)
 
 #Mean Absolute Error
@@ -286,8 +292,8 @@ print("\n")
 
 opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "KNN",
                                                 'Correlation Coefficient': correlation_coefficient,
-                                                  'MAE': (mae_scores[-1]),
-                                                  'RMSE': (rmse_scores[-1]),
+                                                  'MAE': np.mean(mae_scores),
+                                                  'RMSE': np.mean(rmse_scores),
                                                   'RAE': relative_absolute_error,
                                                   'RRSE':root_relative_squared_error }])])
 
@@ -296,17 +302,14 @@ opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "KNN",
 
 ###### Random Forest Regressor #######
 from sklearn.ensemble import RandomForestRegressor # for building the model
-# Assuming you have your data X and y
-# df = pd.read_csv("filtered_dataset_no_outlier_polynomial.csv")
-# X = df[['Tool Rotational Speed (RPM)', 'Translational Speed (mm/min)', 'Axial Force (KN)']].values
-# y = df['Ultimate Tensile Trength (MPa)'].values
+
 k = 10
 model_rf = RandomForestRegressor(n_estimators=20,  random_state=0)
 print("Random Forest Regressor \n")
 
 # Correlation Coefficient
 predicted = cross_val_predict(model_rf, X, y, cv=k)
-correlation_coefficient = -r2_score(y, predicted)
+correlation_coefficient = r2_score(y, predicted)
 print("Correlation Coefficient (R-squared):", correlation_coefficient)
 
 #Mean Absolute Error
@@ -357,13 +360,17 @@ print(type(rmse_scores))
 
 opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "Random Forest",
                                                 'Correlation Coefficient': correlation_coefficient,
-                                                  'MAE': (mae_scores[-1]),
-                                                  'RMSE': (rmse_scores[-1]),
+                                                  'MAE': np.mean(mae_scores),
+                                                  'RMSE': np.mean(rmse_scores),
                                                   'RAE': relative_absolute_error,
                                                   'RRSE':root_relative_squared_error }])])
 
 
 ##### Multilayer perception #####
+
+## gradient boosting
+## ada boosting
+## Ensemble models
 
 from sklearn.neural_network import MLPRegressor
 
@@ -380,7 +387,7 @@ print("Multi Layer Perception Regressor \n")
 
 # Correlation Coefficient
 predicted = cross_val_predict(model_nn, X, y, cv=k)
-correlation_coefficient = -r2_score(y, predicted)
+correlation_coefficient = r2_score(y, predicted)
 print("Correlation Coefficient (R-squared):", correlation_coefficient)
 
 #Mean Absolute Error
@@ -418,11 +425,222 @@ print("\n")
 
 opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "Multilayer Perception",
                                                 'Correlation Coefficient': correlation_coefficient,
-                                                  'MAE': (mae_scores),
-                                                  'RMSE': (rmse_scores),
+                                                  'MAE': np.mean(mae_scores),
+                                                  'RMSE': np.mean(rmse_scores),
+                                                  'RAE': relative_absolute_error,
+                                                  'RRSE':root_relative_squared_error }])])
+
+from sklearn.model_selection import cross_val_score
+from sklearn.ensemble import GradientBoostingRegressor
+
+# Instantiate gb
+model_gb = GradientBoostingRegressor(n_estimators=100,
+                               random_state=42)
+
+print("Gradient Boosting Regressor \n")
+
+# Correlation Coefficient
+predicted = cross_val_predict(model_gb, X, y, cv=k)
+correlation_coefficient = r2_score(y, predicted)
+print("Correlation Coefficient (R-squared):", correlation_coefficient)
+
+#Mean Absolute Error
+mae_scores = -cross_val_score(model_gb, X, y, cv=k, scoring='neg_mean_absolute_error')
+print("Mean Absolute Error (MAE):", np.mean(mae_scores))
+
+
+# Root Mean Squared Error
+mse_scores = -cross_val_score(model_gb, X, y, cv=k, scoring='neg_mean_squared_error')
+rmse_scores = np.sqrt(mse_scores)
+print("Root Mean Squared Error (RMSE):", np.mean(rmse_scores))
+
+# Relative Absolute Error
+absolute_errors = np.abs(y - predicted)
+# Calculate the mean absolute error
+mean_absolute_error = np.mean(absolute_errors)
+# Calculate the mean of the true values
+mean_true_values = np.mean(y)
+# Calculate the relative absolute error
+relative_absolute_error = mean_absolute_error / mean_true_values
+# Print the relative absolute error
+print("Relative Absolute Error (RAE):", relative_absolute_error)
+
+# Calculate the squared errors
+squared_errors = np.square(y - predicted)
+# Calculate the mean squared error
+mean_squared_error = np.mean(squared_errors)
+# Calculate the mean of the true values
+mean_true_values = np.mean(y)
+# Calculate the root relative squared error
+root_relative_squared_error = np.sqrt(mean_squared_error) / mean_true_values
+# Print the root relative squared error
+print("Root Relative Squared Error (RRSE):", root_relative_squared_error)
+print("\n")
+
+opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "Gradient Boosting Regressor",
+                                                'Correlation Coefficient': correlation_coefficient,
+                                                  'MAE': np.mean(mae_scores),
+                                                  'RMSE': np.mean(rmse_scores),
                                                   'RAE': relative_absolute_error,
                                                   'RRSE':root_relative_squared_error }])])
 
 
+from sklearn.model_selection import cross_val_score
+from sklearn.ensemble import AdaBoostRegressor
+
+# Instantiate ada boost
+model_ab = AdaBoostRegressor(n_estimators=100, random_state=42)
+
+print("Ada Boost Regressor \n")
+
+# Correlation Coefficient
+predicted = cross_val_predict(model_ab, X, y, cv=k)
+correlation_coefficient = r2_score(y, predicted)
+print("Correlation Coefficient (R-squared):", correlation_coefficient)
+
+#Mean Absolute Error
+mae_scores = -cross_val_score(model_ab, X, y, cv=k, scoring='neg_mean_absolute_error')
+print("Mean Absolute Error (MAE):", np.mean(mae_scores))
+
+
+# Root Mean Squared Error
+mse_scores = -cross_val_score(model_ab, X, y, cv=k, scoring='neg_mean_squared_error')
+rmse_scores = np.sqrt(mse_scores)
+print("Root Mean Squared Error (RMSE):", np.mean(rmse_scores))
+
+# Relative Absolute Error
+absolute_errors = np.abs(y - predicted)
+# Calculate the mean absolute error
+mean_absolute_error = np.mean(absolute_errors)
+# Calculate the mean of the true values
+mean_true_values = np.mean(y)
+# Calculate the relative absolute error
+relative_absolute_error = mean_absolute_error / mean_true_values
+# Print the relative absolute error
+print("Relative Absolute Error (RAE):", relative_absolute_error)
+
+# Calculate the squared errors
+squared_errors = np.square(y - predicted)
+# Calculate the mean squared error
+mean_squared_error = np.mean(squared_errors)
+# Calculate the mean of the true values
+mean_true_values = np.mean(y)
+# Calculate the root relative squared error
+root_relative_squared_error = np.sqrt(mean_squared_error) / mean_true_values
+# Print the root relative squared error
+print("Root Relative Squared Error (RRSE):", root_relative_squared_error)
+print("\n")
+
+opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "Ada Boost Regressor",
+                                                'Correlation Coefficient': correlation_coefficient,
+                                                  'MAE': np.mean(mae_scores),
+                                                  'RMSE': np.mean(rmse_scores),
+                                                  'RAE': relative_absolute_error,
+                                                  'RRSE':root_relative_squared_error }])])
+
+from sklearn.ensemble import BaggingRegressor
+# Instantiate bagging regressor
+model_bg = BaggingRegressor(n_estimators=100, random_state=42)
+
+print("Bagging Regressor \n")
+
+# Correlation Coefficient
+predicted = cross_val_predict(model_bg, X, y, cv=k)
+correlation_coefficient = r2_score(y, predicted)
+print("Correlation Coefficient (R-squared):", correlation_coefficient)
+
+#Mean Absolute Error
+mae_scores = -cross_val_score(model_bg, X, y, cv=k, scoring='neg_mean_absolute_error')
+print("Mean Absolute Error (MAE):", np.mean(mae_scores))
+
+
+# Root Mean Squared Error
+mse_scores = -cross_val_score(model_bg, X, y, cv=k, scoring='neg_mean_squared_error')
+rmse_scores = np.sqrt(mse_scores)
+print("Root Mean Squared Error (RMSE):", np.mean(rmse_scores))
+
+# Relative Absolute Error
+absolute_errors = np.abs(y - predicted)
+# Calculate the mean absolute error
+mean_absolute_error = np.mean(absolute_errors)
+# Calculate the mean of the true values
+mean_true_values = np.mean(y)
+# Calculate the relative absolute error
+relative_absolute_error = mean_absolute_error / mean_true_values
+# Print the relative absolute error
+print("Relative Absolute Error (RAE):", relative_absolute_error)
+
+# Calculate the squared errors
+squared_errors = np.square(y - predicted)
+# Calculate the mean squared error
+mean_squared_error = np.mean(squared_errors)
+# Calculate the mean of the true values
+mean_true_values = np.mean(y)
+# Calculate the root relative squared error
+root_relative_squared_error = np.sqrt(mean_squared_error) / mean_true_values
+# Print the root relative squared error
+print("Root Relative Squared Error (RRSE):", root_relative_squared_error)
+print("\n")
+
+opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "Bagging Regressor",
+                                                'Correlation Coefficient': correlation_coefficient,
+                                                  'MAE': np.mean(mae_scores),
+                                                  'RMSE': np.mean(rmse_scores),
+                                                  'RAE': relative_absolute_error,
+                                                  'RRSE':root_relative_squared_error }])])
+
+
+### Extra Tree Regressor ###
+from sklearn.ensemble import ExtraTreesRegressor
+model_et = ExtraTreesRegressor(n_estimators=100, random_state=42)
+print("Extra Tree Regressor \n")
+
+# Correlation Coefficient
+predicted = cross_val_predict(model_et, X, y, cv=k)
+correlation_coefficient = r2_score(y, predicted)
+print("Correlation Coefficient (R-squared):", correlation_coefficient)
+
+#Mean Absolute Error
+mae_scores = -cross_val_score(model_et, X, y, cv=k, scoring='neg_mean_absolute_error')
+print("Mean Absolute Error (MAE):", np.mean(mae_scores))
+
+
+# Root Mean Squared Error
+mse_scores = -cross_val_score(model_et, X, y, cv=k, scoring='neg_mean_squared_error')
+rmse_scores = np.sqrt(mse_scores)
+print("Root Mean Squared Error (RMSE):", np.mean(rmse_scores))
+
+# Relative Absolute Error
+absolute_errors = np.abs(y - predicted)
+# Calculate the mean absolute error
+mean_absolute_error = np.mean(absolute_errors)
+# Calculate the mean of the true values
+mean_true_values = np.mean(y)
+# Calculate the relative absolute error
+relative_absolute_error = mean_absolute_error / mean_true_values
+# Print the relative absolute error
+print("Relative Absolute Error (RAE):", relative_absolute_error)
+
+# Calculate the squared errors
+squared_errors = np.square(y - predicted)
+# Calculate the mean squared error
+mean_squared_error = np.mean(squared_errors)
+# Calculate the mean of the true values
+mean_true_values = np.mean(y)
+# Calculate the root relative squared error
+root_relative_squared_error = np.sqrt(mean_squared_error) / mean_true_values
+# Print the root relative squared error
+print("Root Relative Squared Error (RRSE):", root_relative_squared_error)
+print("\n")
+
+opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': "Extra Tree Regressor",
+                                                'Correlation Coefficient': correlation_coefficient,
+                                                  'MAE': np.mean(mae_scores),
+                                                  'RMSE': np.mean(rmse_scores),
+                                                  'RAE': relative_absolute_error,
+                                                  'RRSE':root_relative_squared_error }])])
+
+## voting regressor## need to try
 
 opt.to_csv('All_ML_models_Results.csv', index=False)
+
