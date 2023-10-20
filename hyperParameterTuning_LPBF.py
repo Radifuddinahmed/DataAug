@@ -15,9 +15,9 @@ from sklearn.model_selection import GridSearchCV
 import pandas as pd
 
 # Load the dataset as an example
-df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\LPBF_Dataset_Combined_v1_python.csv')
+df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\LPBF_Dataset_Combined_v2_python_Depth.csv')
 X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]']].values
-y = df['Max Melt Pool Width [um]'].values
+y = df['Max Melt Pool Depth [um]'].values
 
 
 model_params = {
@@ -25,7 +25,7 @@ model_params = {
     'svm': {
         'model': SVR(),
         'params': {
-            'C': [1, 10, 20],
+            'C': [.2, .5, 1],
             'kernel': ['rbf', 'linear']
         }
     },

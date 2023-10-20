@@ -25,12 +25,26 @@ df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\LPBF_Dataset_Combine
 X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]']].values
 y = df['Max Melt Pool Depth [um]'].values
 
+c1 = []
+c2 = []
+c3 = []
+c4 = []
+c5 = []
+c6 = []
+opt_data = {'Model': c1,
+            'Correlation Coefficient': c2,
+            'MAE': c3,
+            'RMSE': c4,
+            'RAE': c5,
+            'RRSE':c6 }
+opt = pd.DataFrame(opt_data)
+
 # Create a list of ensemble regressors
 ensemble_methods = [
     ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(),random_state=0).fit(X, y)),
     ('Linear Regression', LinearRegression()),
     ('Polynomial Regression', LinearRegression()),
-    ('Support Vector Regression', SVR(kernel='linear', C=1)),
+    ('Support Vector Regression', SVR(kernel='linear', C=.5)),
     ('KNN', KNeighborsRegressor(n_neighbors=2)),
     ('Multi Layer Perception', MLPRegressor(activation='relu',hidden_layer_sizes=(10, 100),alpha=0.001,random_state=20,early_stopping=False)),
     ('Random Forest', RandomForestRegressor(n_estimators=100, random_state=42)),
@@ -67,3 +81,12 @@ for name, model in ensemble_methods:
     print(f"{name} - Mean R-squared (R2): {np.mean(r2_scores):.2f} (+/- {np.std(r2_scores):.2f})")
     print(f"{name} - Relative Absolute Error: {relative_absolute_error:.2f} (+/- {np.std(relative_absolute_error):.2f})")
     print(f"{name} - Root Relative Squared Error (RRSE): {root_relative_squared_error:.2f} (+/- {np.std(relative_absolute_error):.2f})")
+
+    opt = pd.concat([opt, pd.DataFrame.from_records([{'Model': f"{name}",
+                                                      'Correlation Coefficient': correlation_coefficient,
+                                                      'MAE': np.mean(mse_scores),
+                                                      'RMSE': np.mean(rmse_scores),
+                                                      'RAE': relative_absolute_error,
+                                                      'RRSE': root_relative_squared_error}])])
+
+opt.to_csv('All_ML_models_Results_v2.csv', index=False)
