@@ -1,4 +1,19 @@
-
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_predict
+from sklearn.metrics import r2_score
+from sklearn.ensemble import (
+    RandomForestRegressor,
+    GradientBoostingRegressor,
+    AdaBoostRegressor,
+    BaggingRegressor,
+    ExtraTreesRegressor,
+)
+from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.gaussian_process.kernels import DotProduct, WhiteKernel
+from sklearn.linear_model import LinearRegression
+from sklearn.svm import SVR
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.neural_network import MLPRegressor
 
 
 from sklearn import svm
@@ -20,50 +35,209 @@ X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spo
 y = df['Max Melt Pool Depth [um]'].values
 
 
+# Create a list of ensemble regressors
+# ensemble_methods = [
+
+#     ('Multi Layer Perce,alpha=0.001,random_state=20,early_stopping=False)),
+#     ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(),random_state=0).fit(X, y)),
+
+
+
+
+
+
+
+
+# ]
+
+
 model_params = {
 
-    'svm': {
-        'model': SVR(),
+    'Multi Layer Perception': {
+        'model': MLPRegressor(),
         'params': {
-            'C': [.2, .5, 1],
-            'kernel': ['rbf', 'linear']
+            'activation':['relu'],
+            'alpha':[0.001],
+            # 'batch_size',
+            # 'beta_1',
+            # 'beta_2',
+            'early_stopping': [False],
+            # 'epsilon',
+            'hidden_layer_sizes': [10, 100],
+            # 'learning_rate',
+            # 'learning_rate_init',
+            # 'max_fun',
+            # 'max_iter',
+            # 'momentum',
+            # 'n_iter_no_change',
+            # 'nesterovs_momentum',
+            # 'power_t',
+            'random_state': [20],
+            # 'shuffle',
+            # 'solver',
+            # 'tol',
+            # 'validation_fraction',
+            # 'verbose',
+            # 'warm_start'
         }
     },
-
-    # 'svm': {
-    #     'model': svm.SVC(gamma='auto'),
+    'Guassian Process': {
+        'model': GaussianProcessRegressor(),
+        'params': {
+            'alpha',
+            'copy_X_train',
+            'kernel',
+            'n_restarts_optimizer',
+            'normalize_y',
+            'optimizer',
+            'random_state'
+        }
+    },
+    'Linear Regression': {
+        'model': LinearRegression(),
+        'params': {
+            'copy_X',
+            'fit_intercept',
+            'n_jobs',
+            'positive'
+        }
+    },
+    # 'Polynomial Regression': {
+    #     'model': SVR(),
     #     'params': {
-    #         'C': [1, 10, 20],
+    #         'C': [.2, .5, 1],
     #         'kernel': ['rbf', 'linear']
     #     }
     # },
-    # 'random_forest': {
-    #     'model': RandomForestClassifier(),
-    #     'params': {
-    #         'n_estimators': [1, 5, 10]
-    #     }
-    # },
-    # 'logistic_regression': {
-    #     'model': LogisticRegression(solver='liblinear', multi_class='auto'),
-    #     'params': {
-    #         'C': [1, 5, 10]
-    #     }
-    # },
-    # 'naive_bayes_gaussian': {
-    #     'model': GaussianNB(),
-    #     'params': {}
-    # },
-    # 'naive_bayes_multinomial': {
-    #     'model': MultinomialNB(),
-    #     'params': {}
-    # },
-    # 'decision_tree': {
-    #     'model': DecisionTreeClassifier(),
-    #     'params': {
-    #         'criterion': ['gini', 'entropy'],
-    #
-    #     }
-    # }
+    'Support Vector Machine': {
+        'model': SVR(),
+        'params': {
+            'C': [.2, .5, 1],
+            # 'cache_size',
+            # 'coef0',
+            # 'degree',
+            # 'epsilon',
+            # 'gamma',
+            'kernel': ['rbf', 'linear'],
+            # 'max_iter',
+            # 'shrinking',
+            # 'tol',
+            # 'verbose'
+        }
+    },
+    'KNN': {
+        'model': KNeighborsRegressor(),
+        'params': {
+            # 'algorithm',
+            # 'leaf_size',
+            # 'metric',
+            # 'metric_params',
+            # 'n_jobs',
+            # 'n_neighbors',
+            # 'p',
+            # 'weights'
+        }
+    },
+    'Random Forest': {
+        'model': RandomForestRegressor(),
+        'params': {
+            # 'bootstrap',
+            # 'ccp_alpha',
+            # 'criterion',
+            # 'max_depth',
+            # 'max_features',
+            # 'max_leaf_nodes',
+            # 'max_samples',
+            # 'min_impurity_decrease',
+            # 'min_samples_leaf',
+            # 'min_samples_split',
+            # 'min_weight_fraction_leaf',
+            'n_estimators': [100],
+            # 'n_jobs',
+            # 'oob_score',
+            # 'random_state',
+            # 'verbose',
+            # 'warm_start'
+        }
+    },
+    'Gradient Boosting': {
+        'model': GradientBoostingRegressor(),
+        'params': {
+            # 'alpha',
+            # 'ccp_alpha',
+            # 'criterion',
+            # 'init',
+            # 'learning_rate',
+            # 'loss',
+            # 'max_depth',
+            # 'max_features',
+            # 'max_leaf_nodes',
+            # 'min_impurity_decrease',
+            # 'min_samples_leaf',
+            # 'min_samples_split',
+            # 'min_weight_fraction_leaf',
+            'n_estimators': [100],
+            # 'n_iter_no_change',
+            # 'random_state',
+            # 'subsample',
+            # 'tol',
+            # 'validation_fraction',
+            # 'verbose',
+            # 'warm_start'
+        }
+    },
+    'AdaBoost': {
+        'model': AdaBoostRegressor(),
+        'params': {
+            # 'base_estimator',
+            # 'estimator',
+            # 'learning_rate',
+            # 'loss',
+            'n_estimators': [100],
+            # 'random_state'
+        }
+    },
+    'Bagging': {
+        'model': BaggingRegressor(),
+        'params': {
+            # 'base_estimator',
+            # 'bootstrap',
+            # 'bootstrap_features',
+            # 'estimator',
+            # 'max_features',
+            # 'max_samples',
+            'n_estimators': [100],
+            # 'n_jobs',
+            # 'oob_score',
+            # 'random_state',
+            # 'verbose',
+            # 'warm_start'
+        }
+    },
+    'extraTreesRegressor': {
+        'model': ExtraTreesRegressor(),
+        'params': {
+            #'bootstrap': [True, False],
+            # 'ccp_alpha',
+            # 'criterion',
+            # 'max_depth',
+            # 'max_features',
+            # 'max_leaf_nodes',
+            # 'max_samples',
+            # 'min_impurity_decrease',
+            # 'min_samples_leaf',
+            # 'min_samples_split',
+            # 'min_weight_fraction_leaf',
+            'n_estimators': [100],
+            # 'n_jobs',
+            # 'oob_score',
+            #'random_state': [100, 200, 300],
+            # 'verbose',
+            #'warm_start': [True, False],
+            ## 'kernel': ['rbf', 'linear']
+        }
+    },
+
 }
 
 
