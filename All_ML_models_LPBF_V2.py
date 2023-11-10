@@ -21,9 +21,9 @@ from sklearn.neural_network import MLPRegressor
 
 
 # Load the dataset as an example
-df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\LPBF_Dataset_Combined_v2_python_Depth.csv')
+df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\LPBF_Dataset_Combined_v2_python_Width.csv')
 X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]']].values
-y = df['Max Melt Pool Depth [um]'].values
+y = df['Max Melt Pool Width [um]'].values
 
 c1 = []
 c2 = []
@@ -89,4 +89,4 @@ for name, model in ensemble_methods:
                                                       'RAE': relative_absolute_error,
                                                       'RRSE': root_relative_squared_error}])])
 
-opt.to_csv('All_ML_models_Results_v2.csv', index=False)
+opt.to_csv('All_ML_models_Results_v2_Width.csv', index=False)

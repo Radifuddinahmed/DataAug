@@ -35,21 +35,9 @@ X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spo
 y = df['Max Melt Pool Depth [um]'].values
 
 
-# Create a list of ensemble regressors
-# ensemble_methods = [
 
 #     ('Multi Layer Perce,alpha=0.001,random_state=20,early_stopping=False)),
-#     ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(),random_state=0).fit(X, y)),
-
-
-
-
-
-
-
-
-# ]
-
+# (kernel=DotProduct() + WhiteKernel(),random_state=0).fit(X, y)),
 
 model_params = {
 
@@ -142,9 +130,9 @@ model_params = {
         'model': RandomForestRegressor(),
         'params': {
             # 'bootstrap',
-            # 'ccp_alpha',
+            # 'ccp_alpha': [,
             # 'criterion',
-            # 'max_depth',
+            # 'max_depth' : [ change this,
             # 'max_features',
             # 'max_leaf_nodes',
             # 'max_samples',
@@ -152,7 +140,7 @@ model_params = {
             # 'min_samples_leaf',
             # 'min_samples_split',
             # 'min_weight_fraction_leaf',
-            'n_estimators': [100],
+            'n_estimators': [ range (1,100,1)],
             # 'n_jobs',
             # 'oob_score',
             # 'random_state',
@@ -167,7 +155,7 @@ model_params = {
             # 'ccp_alpha',
             # 'criterion',
             # 'init',
-            # 'learning_rate',
+            # 'learning_rate' change this,
             # 'loss',
             # 'max_depth',
             # 'max_features',
