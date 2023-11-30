@@ -77,7 +77,7 @@ opt = pd.DataFrame(opt_data)
 
 for rpm in np.arange(1,2023,2):
     for speed in np.arange(1.6, 157.5, 1):
-        for force in np.arange(1, 10, .1):
+        for force in np.arange(1, 10, 1):
 
             uts = (rf_model.predict([[rpm,speed,force]]))
             print(rpm, speed, force, uts.item())

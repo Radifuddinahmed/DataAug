@@ -18,12 +18,18 @@ from sklearn.linear_model import LinearRegression
 from sklearn.svm import SVR
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.neural_network import MLPRegressor
+from sklearn.preprocessing import PolynomialFeatures
 
 
 # Load the dataset as an example
-df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\LPBF_Dataset_Combined_v2_python_Width.csv')
+df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_Normalized_Depth.csv')
 X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]']].values
-y = df['Max Melt Pool Width [um]'].values
+y = df['Max Melt Pool Depth [um]'].values
+
+poly = PolynomialFeatures(degree=7, include_bias=False)
+poly_features = poly.fit_transform(X)
+poly_reg_model = LinearRegression()
+
 
 c1 = []
 c2 = []
@@ -43,7 +49,7 @@ opt = pd.DataFrame(opt_data)
 ensemble_methods = [
     ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(),random_state=0).fit(X, y)),
     ('Linear Regression', LinearRegression()),
-    ('Polynomial Regression', LinearRegression()),
+    ('Polynomial Regression', poly_reg_model.fit(poly_features, y)),
     ('Support Vector Regression', SVR(kernel='linear', C=.5)),
     ('KNN', KNeighborsRegressor(n_neighbors=2)),
     ('Multi Layer Perception', MLPRegressor(activation='relu',hidden_layer_sizes=(10, 100),alpha=0.001,random_state=20,early_stopping=False)),
@@ -89,4 +95,7 @@ for name, model in ensemble_methods:
                                                       'RAE': relative_absolute_error,
                                                       'RRSE': root_relative_squared_error}])])
 
-opt.to_csv('All_ML_models_Results_v2_Width.csv', index=False)
+
+
+
+opt.to_csv('All_ML_models_Results_v2_Depth.csv', index=False)
