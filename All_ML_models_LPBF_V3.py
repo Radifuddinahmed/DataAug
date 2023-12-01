@@ -19,6 +19,8 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
+from sklearn.gaussian_process.kernels import RBF
+from sklearn.gaussian_process.kernels import RationalQuadratic
 
 # Load the dataset as an example
 df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_Normalized_Width.csv')
@@ -44,19 +46,20 @@ opt_data = {'Model': c1,
             'RRSE':c6 }
 opt = pd.DataFrame(opt_data)
 
+
 # Create a list of ensemble regressors
 ensemble_methods = [
-    ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(),random_state=42).fit(X, y)),
+    ('Gaussian Process', GaussianProcessRegressor(kernel=RationalQuadratic(alpha=1, length_scale=1),random_state=42).fit(X, y)),
     ('Linear Regression', LinearRegression()),
     ('Polynomial Regression', poly_reg_model.fit(poly_features, y)),
-    ('Support Vector Regression', SVR(kernel='sigmoid', C=1000, gamma=.001)),
+    ('Support Vector Regression', SVR(kernel='linear', C=1000, gamma=1e-05)),
     ('KNN', KNeighborsRegressor(n_neighbors=3)),
-    ('Multi Layer Perception', MLPRegressor(activation='tanh',batch_size=32,hidden_layer_sizes=3, learning_rate='adaptive',alpha=0.001,random_state=42,early_stopping=False)),
+    ('Multi Layer Perception', MLPRegressor(activation='identity',batch_size=32,hidden_layer_sizes=4, learning_rate='invscaling',max_iter= 500,alpha=0.001,random_state=42,early_stopping=False)),
     ('Random Forest', RandomForestRegressor(n_estimators=50,max_depth=10, min_samples_split=2, random_state=42)),
-    ('Gradient Boosting', GradientBoostingRegressor(n_estimators=200,learning_rate=0.1, max_depth=3, min_samples_split=10 , random_state=42)),
-    ('AdaBoost', AdaBoostRegressor(base_estimator=LinearRegression(),learning_rate=.01,n_estimators=10, random_state=42)),
-    ('Bagging', BaggingRegressor(base_estimator=LinearRegression(),n_estimators=200, random_state=42)),
-    ('Extra Trees', ExtraTreesRegressor(max_depth=10,min_samples_split=5,n_estimators=10, random_state=42)),
+    ('Gradient Boosting', GradientBoostingRegressor(n_estimators=200,learning_rate=0.1, max_depth=5, min_samples_split=2 , random_state=42)),
+    ('AdaBoost', AdaBoostRegressor(base_estimator=LinearRegression(),learning_rate=.001,n_estimators=10, random_state=42)),
+    ('Bagging', BaggingRegressor(base_estimator=DecisionTreeRegressor(),n_estimators=10, random_state=42)),
+    ('Extra Trees', ExtraTreesRegressor(max_depth=10,min_samples_split=5,n_estimators=100, random_state=42)),
 ]
 k = 10
 # Compare ensemble methods using cross-validation
