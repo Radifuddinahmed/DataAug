@@ -46,12 +46,12 @@ opt = pd.DataFrame(opt_data)
 
 # Create a list of ensemble regressors
 ensemble_methods = [
-    ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(),random_state=0).fit(X, y)),
+    ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(),random_state=42).fit(X, y)),
     ('Linear Regression', LinearRegression()),
     ('Polynomial Regression', poly_reg_model.fit(poly_features, y)),
     ('Support Vector Regression', SVR(kernel='sigmoid', C=1000, gamma=.001)),
     ('KNN', KNeighborsRegressor(n_neighbors=3)),
-    ('Multi Layer Perception', MLPRegressor(activation='tanh',batch_size=32,hidden_layer_sizes=3, learning_rate='adaptive',alpha=0.001,random_state=20,early_stopping=False)),
+    ('Multi Layer Perception', MLPRegressor(activation='tanh',batch_size=32,hidden_layer_sizes=3, learning_rate='adaptive',alpha=0.001,random_state=42,early_stopping=False)),
     ('Random Forest', RandomForestRegressor(n_estimators=50,max_depth=10, min_samples_split=2, random_state=42)),
     ('Gradient Boosting', GradientBoostingRegressor(n_estimators=200,learning_rate=0.1, max_depth=3, min_samples_split=10 , random_state=42)),
     ('AdaBoost', AdaBoostRegressor(base_estimator=LinearRegression(),learning_rate=.01,n_estimators=10, random_state=42)),
@@ -133,12 +133,12 @@ opt = pd.DataFrame(opt_data)
 
 # Create a list of ensemble regressors
 ensemble_methods = [
-    ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(),random_state=0).fit(X, y)),
+    ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(),random_state=42).fit(X, y)),
     ('Linear Regression', LinearRegression()),
     ('Polynomial Regression', poly_reg_model.fit(poly_features, y)),
     ('Support Vector Regression', SVR(kernel='sigmoid', C=1000, gamma=.001)),
     ('KNN', KNeighborsRegressor(n_neighbors=4)),
-    ('Multi Layer Perception', MLPRegressor(activation='relu',batch_size=128,hidden_layer_sizes=4, learning_rate='constant',alpha=0.001,random_state=20,early_stopping=False)),
+    ('Multi Layer Perception', MLPRegressor(activation='relu',batch_size=128,hidden_layer_sizes=4, learning_rate='constant',alpha=0.001,random_state=42,early_stopping=False)),
     ('Random Forest', RandomForestRegressor(n_estimators=50,max_depth=10, min_samples_split=2, random_state=42)),
     ('Gradient Boosting', GradientBoostingRegressor(n_estimators=200,learning_rate=1, max_depth=3, min_samples_split=10 , random_state=42)),
     ('AdaBoost', AdaBoostRegressor(base_estimator= DecisionTreeRegressor(max_depth=5),learning_rate=.001,n_estimators=10, random_state=42)),
