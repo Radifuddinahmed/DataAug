@@ -58,84 +58,84 @@ model_params = {
     'Linear Regression': {
         'model': LinearRegression(),
         'params': {
-            # 'lambda': [0.001, 0.01, 0.1, 1, 10, 100],
+             'lambda': [0.001, 0.01, 0.1, 1, 10, 100],
         }
     },
-    'Polynomial Regression': {
-        'model': SVR(),
-        'params': {
-            'C': [.2, .5, 1],
-            'kernel': ['rbf', 'linear']
-        }
-    },
-    'Support Vector Machine': {
-        'model': SVR(),
-        'params': {
-            'C': np.logspace(-5, 3, num=9), ##
-            'gamma': np.logspace(-5, 3, num=9),
-            'kernel': [ 'linear', 'polynomial','rbf', 'sigmoid'],
-        }
-    },
-    'KNN': {
-        'model': KNeighborsRegressor(),
-        'params': {
-             'n_neighbors': [2,3,4,5 ,10,15,20,25,30,35,40,45,50], ## range(5,50,5) gives warning
-                    }
-    },
-    'Multi Layer Perception': {
-        'model': MLPRegressor(),
-        'params': {
-            'activation': ['tanh', 'logistic', 'relu', 'identity'],
-            'learning_rate': ['invscaling', 'constant', 'adaptive'],
-            'max_iter': [200],
-            # 'dropout_rate': [.01,.1,.2,.3],
-            'batch_size': [32,64,128],
-            'hidden_layer_sizes': [2,3,4],
-            'early_stopping': [False],
-        }
-    },
-    'Random Forest': {
-        'model': RandomForestRegressor(),
-        'params': {
-            'n_estimators': [ 10, 50, 100, 200],
-            'max_depth' : [ 3, 5, 7, 10],
-            'min_samples_split' : [2 , 5, 10],
-        }
-    },
-    'Gradient Boosting': {
-        'model': GradientBoostingRegressor(),
-        'params': {
-            'n_estimators': [ 10, 50, 100, 200],
-            'max_depth' : [ 3, 5, 7, 10],
-            'min_samples_split' : [2 , 5, 10],
-            #alpha
-            'learning_rate': np.logspace(-5, 3, num=9),
-        }
-    },
-    'AdaBoost': {
-        'model': AdaBoostRegressor(),
-        'params': {
-            'base_estimator': [DecisionTreeRegressor(max_depth=3), DecisionTreeRegressor(max_depth=5) , LinearRegression()],
-            'n_estimators': [10,50,100,200],
-            'learning_rate': [0.001, 0.01, 0.1, 0.5, 1.0],  # Adjust as needed
-
-        }
-    },
-    'Bagging': {
-        'model': BaggingRegressor(),
-        'params': {
-            'base_estimator' : [DecisionTreeRegressor(), LinearRegression()],
-            'n_estimators': [10,50,100,200],
-        }
-    },
-    'extraTreesRegressor': {
-        'model': ExtraTreesRegressor(),
-        'params': {
-            'n_estimators': [10, 50, 100, 200],
-            'max_depth': [3, 5, 7, 10],
-            'min_samples_split': [2, 5, 10]
-        }
-    },
+    # 'Polynomial Regression': {
+    #     'model': SVR(),
+    #     'params': {
+    #         'C': [.2, .5, 1],
+    #         'kernel': ['rbf', 'linear']
+    #     }
+    # },
+    # 'Support Vector Machine': {
+    #     'model': SVR(),
+    #     'params': {
+    #         'C': np.logspace(-5, 3, num=9), ##
+    #         'gamma': np.logspace(-5, 3, num=9),
+    #         'kernel': [ 'linear', 'polynomial','rbf', 'sigmoid'],
+    #     }
+    # },
+    # 'KNN': {
+    #     'model': KNeighborsRegressor(),
+    #     'params': {
+    #          'n_neighbors': [2,3,4,5 ,10,15,20,25,30,35,40,45,50], ## range(5,50,5) gives warning
+    #                 }
+    # },
+    # 'Multi Layer Perception': {
+    #     'model': MLPRegressor(),
+    #     'params': {
+    #         'activation': ['tanh', 'logistic', 'relu', 'identity'],
+    #         'learning_rate': ['invscaling', 'constant', 'adaptive'],
+    #         'max_iter': [200],
+    #         # 'dropout_rate': [.01,.1,.2,.3],
+    #         'batch_size': [32,64,128],
+    #         'hidden_layer_sizes': [2,3,4],
+    #         'early_stopping': [False],
+    #     }
+    # },
+    # 'Random Forest': {
+    #     'model': RandomForestRegressor(),
+    #     'params': {
+    #         'n_estimators': [ 10, 50, 100, 200],
+    #         'max_depth' : [ 3, 5, 7, 10],
+    #         'min_samples_split' : [2 , 5, 10],
+    #     }
+    # },
+    # 'Gradient Boosting': {
+    #     'model': GradientBoostingRegressor(),
+    #     'params': {
+    #         'n_estimators': [ 10, 50, 100, 200],
+    #         'max_depth' : [ 3, 5, 7, 10],
+    #         'min_samples_split' : [2 , 5, 10],
+    #         #alpha
+    #         'learning_rate': np.logspace(-5, 3, num=9),
+    #     }
+    # },
+    # 'AdaBoost': {
+    #     'model': AdaBoostRegressor(),
+    #     'params': {
+    #         'base_estimator': [DecisionTreeRegressor(max_depth=3), DecisionTreeRegressor(max_depth=5) , LinearRegression()],
+    #         'n_estimators': [10,50,100,200],
+    #         'learning_rate': [0.001, 0.01, 0.1, 0.5, 1.0],  # Adjust as needed
+    #
+    #     }
+    # },
+    # 'Bagging': {
+    #     'model': BaggingRegressor(),
+    #     'params': {
+    #         'base_estimator' : [DecisionTreeRegressor(), LinearRegression()],
+    #         'n_estimators': [10,50,100,200],
+    #     }
+    # },
+    # 'extraTreesRegressor': {
+    #     'model': ExtraTreesRegressor(),
+    #     'params': {
+    #         'n_estimators': [10, 50, 100, 200],
+    #         'max_depth': [3, 5, 7, 10],
+    #         'min_samples_split': [2, 5, 10]
+    #     }
+    # },
 
 }
 

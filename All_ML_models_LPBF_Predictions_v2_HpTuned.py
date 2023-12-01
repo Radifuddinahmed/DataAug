@@ -84,9 +84,9 @@ print(prediction_ET_width)
 #!###############################################!#
 
 # Load the dataset as an example
-df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_Original_Width.csv')
+df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_Original_Depth.csv')
 X1 = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]']].values
-y1 = df['Max Melt Pool Width [um]'].values
+y1 = df['Max Melt Pool Depth [um]'].values
 
 from sklearn.model_selection import train_test_split
 X1_train, X1_test, y1_train, y1_test = train_test_split(X1, y1, test_size=0.2, random_state=0)
