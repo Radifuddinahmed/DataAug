@@ -1,0 +1,12 @@
+model,best_score,best_params
+Guassian Process,-412.41854277678675,{}
+Linear Regression,0.5070893185834648,{}
+Polynomial Regression,0.23826250814153188,"{'C': 1, 'kernel': 'rbf'}"
+Support Vector Machine,0.36208123333316367,"{'C': 10.0, 'gamma': 1.0, 'kernel': 'rbf'}"
+KNN,0.16936369606153479,{'n_neighbors': 3}
+Multi Layer Perception,-0.08729881536059159,"{'activation': 'tanh', 'batch_size': 32, 'early_stopping': False, 'hidden_layer_sizes': 3, 'learning_rate': 'adaptive', 'max_iter': 200}"
+Random Forest,0.10957639566943116,"{'max_depth': 10, 'min_samples_split': 2, 'n_estimators': 50}"
+Gradient Boosting,0.4257682066622929,"{'learning_rate': 0.1, 'max_depth': 3, 'min_samples_split': 10, 'n_estimators': 200}"
+AdaBoost,0.5150030808588913,"{'base_estimator': LinearRegression(), 'learning_rate': 0.01, 'n_estimators': 10}"
+Bagging,0.5124966803276257,"{'base_estimator': LinearRegression(), 'n_estimators': 10}"
+extraTreesRegressor,0.24071839887183605,"{'max_depth': 10, 'min_samples_split': 5, 'n_estimators': 10}"

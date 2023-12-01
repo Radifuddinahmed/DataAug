@@ -37,9 +37,9 @@ from sklearn.gaussian_process.kernels import RationalQuadratic
 
 
 # Load the dataset as an example
-df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_Normalized_Depth.csv')
+df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_Normalized_Width.csv')
 X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]']].values
-y = df['Max Melt Pool Depth [um]'].values
+y = df['Max Melt Pool Width [um]'].values
 
 
 
@@ -154,4 +154,4 @@ for model_name, mp in model_params.items():
 
 df = pd.DataFrame(scores, columns=['model', 'best_score', 'best_params'])
 print(df)
-df.to_csv('LPBF_HpTuning_Values.csv', index=False)
+df.to_csv('LPBF_HpTuning_Values_width.csv', index=False)
