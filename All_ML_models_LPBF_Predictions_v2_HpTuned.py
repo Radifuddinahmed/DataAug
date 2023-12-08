@@ -67,7 +67,7 @@ ET_regressor = ExtraTreesRegressor(max_depth=10,min_samples_split=5,n_estimators
 
 ET_regressor.fit(X_train, y_train)
 
-val_data = [[200,300,70,100,50]]
+val_data = [[200,300,70,58,50]]
 prediction_ET_width = ET_regressor.predict(val_data)
 
 # print message
@@ -125,7 +125,7 @@ Bagging_regressor = BaggingRegressor(base_estimator= DecisionTreeRegressor(),n_e
 
 Bagging_regressor.fit(X,y)
 
-val_data = [[200,300,70,100,50]]
+val_data = [[200,300,70,58,50]]
 prediction_BR_depth = Bagging_regressor.predict(val_data)
 
 # print message
