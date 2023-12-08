@@ -302,8 +302,6 @@ poly = PolynomialFeatures(degree=7, include_bias=False)
 poly_features = poly.fit_transform(X)
 poly_reg_model = LinearRegression()
 
-
-
 c1 = []
 c2 = []
 c3 = []
