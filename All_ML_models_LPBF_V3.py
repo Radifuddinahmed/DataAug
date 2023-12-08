@@ -232,17 +232,17 @@ opt = pd.DataFrame(opt_data)
 
 
 ensemble_methods = [
-    ('Gaussian Process', GaussianProcessRegressor(kernel=RationalQuadratic(alpha=1, length_scale=1),random_state=42).fit(X, y)),
+    ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(),random_state=42).fit(X, y)),
     ('Linear Regression', LinearRegression()),
     ('Polynomial Regression', poly_reg_model.fit(poly_features, y)),
-    ('Support Vector Regression', SVR(kernel='linear', C=1000, gamma=1e-05)),
-    ('KNN', KNeighborsRegressor(n_neighbors=3)),
-    ('Multi Layer Perception', MLPRegressor(activation='identity',batch_size=32,hidden_layer_sizes=4, learning_rate='invscaling',max_iter= 500,alpha=0.001,random_state=42,early_stopping=False)),
-    ('Random Forest', RandomForestRegressor(n_estimators=50,max_depth=10, min_samples_split=2, random_state=42)),
-    ('Gradient Boosting', GradientBoostingRegressor(n_estimators=200,learning_rate=0.1, max_depth=5, min_samples_split=2 , random_state=42)),
-    ('AdaBoost', AdaBoostRegressor(base_estimator=LinearRegression(),learning_rate=.001,n_estimators=10, random_state=42)),
-    ('Bagging', BaggingRegressor(base_estimator=DecisionTreeRegressor(),n_estimators=10, random_state=42)),
-    ('Extra Trees', ExtraTreesRegressor(max_depth=10,min_samples_split=5,n_estimators=100, random_state=42)),
+    ('Support Vector Regression', SVR(kernel='linear', C=.5)),
+    ('KNN', KNeighborsRegressor(n_neighbors=2)),
+    ('Multi Layer Perception', MLPRegressor(activation='relu',hidden_layer_sizes=(10, 100),alpha=0.001,random_state=42,early_stopping=False)),
+    ('Random Forest', RandomForestRegressor(n_estimators=100, random_state=42)),
+    ('Gradient Boosting', GradientBoostingRegressor(n_estimators=100, random_state=42)),
+    ('AdaBoost', AdaBoostRegressor(n_estimators=100, random_state=42)),
+    ('Bagging', BaggingRegressor(n_estimators=100, random_state=42)),
+    ('Extra Trees', ExtraTreesRegressor(n_estimators=100, random_state=42)),
 ]
 k = 10
 # Compare ensemble methods using cross-validation
@@ -303,6 +303,7 @@ poly_features = poly.fit_transform(X)
 poly_reg_model = LinearRegression()
 
 
+
 c1 = []
 c2 = []
 c3 = []
@@ -322,14 +323,14 @@ ensemble_methods = [
     ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(),random_state=42).fit(X, y)),
     ('Linear Regression', LinearRegression()),
     ('Polynomial Regression', poly_reg_model.fit(poly_features, y)),
-    ('Support Vector Regression', SVR(kernel='sigmoid', C=1000, gamma=.001)),
-    ('KNN', KNeighborsRegressor(n_neighbors=4)),
-    ('Multi Layer Perception', MLPRegressor(activation='relu',batch_size=128,hidden_layer_sizes=4, learning_rate='constant',alpha=0.001,random_state=42,early_stopping=False)),
-    ('Random Forest', RandomForestRegressor(n_estimators=50,max_depth=10, min_samples_split=2, random_state=42)),
-    ('Gradient Boosting', GradientBoostingRegressor(n_estimators=200,learning_rate=1, max_depth=3, min_samples_split=10 , random_state=42)),
-    ('AdaBoost', AdaBoostRegressor(base_estimator= DecisionTreeRegressor(max_depth=5),learning_rate=.001,n_estimators=10, random_state=42)),
-    ('Bagging', BaggingRegressor(base_estimator= DecisionTreeRegressor(),n_estimators=200, random_state=42)),
-    ('Extra Trees', ExtraTreesRegressor(max_depth=10,min_samples_split=5,n_estimators=200, random_state=42)),
+    ('Support Vector Regression', SVR(kernel='linear', C=.5)),
+    ('KNN', KNeighborsRegressor(n_neighbors=2)),
+    ('Multi Layer Perception', MLPRegressor(activation='relu',hidden_layer_sizes=(10, 100),alpha=0.001,random_state=42,early_stopping=False)),
+    ('Random Forest', RandomForestRegressor(n_estimators=100, random_state=42)),
+    ('Gradient Boosting', GradientBoostingRegressor(n_estimators=100, random_state=42)),
+    ('AdaBoost', AdaBoostRegressor(n_estimators=100, random_state=42)),
+    ('Bagging', BaggingRegressor(n_estimators=100, random_state=42)),
+    ('Extra Trees', ExtraTreesRegressor(n_estimators=100, random_state=42)),
 ]
 k = 10
 # Compare ensemble methods using cross-validation
