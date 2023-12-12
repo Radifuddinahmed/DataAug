@@ -98,7 +98,7 @@ for name, model in ensemble_methods:
 
 
 
-opt.to_csv('All_ML_models_Results_v2_Depth.csv', index=False)
+opt.to_csv('All_ML_models_Results_v2_Depth.csv',mode='w', index=False)
 
 print("GaussianProcessRegressor ")
 print(GaussianProcessRegressor().get_params())

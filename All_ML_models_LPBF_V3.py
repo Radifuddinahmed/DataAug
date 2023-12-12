@@ -107,7 +107,7 @@ from sklearn.gaussian_process.kernels import RationalQuadratic
 #
 #
 #
-# opt.to_csv('All_ML_models_Results_v3_HpTuned_Width.csv', index=False)
+# opt.to_csv('All_ML_models_Results_v3_HpTuned_Width.csv',mode='w', index=False)
 #
 #
 # #!###############################################!#
@@ -194,19 +194,23 @@ from sklearn.gaussian_process.kernels import RationalQuadratic
 #
 #
 #
-# opt.to_csv('All_ML_models_Results_v3_HpTuned_Depth.csv', index=False)
+# opt.to_csv('All_ML_models_Results_v3_HpTuned_Depth.csv',mode='w', index=False)
 
 
 #!###############################################!#
 #!                                               !#
 #!####################  Width Poly ##############!#
-#!                                               !#
+#!             with original values              !#
 #!###############################################!#
 
 
 # Load the dataset as an example
-df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_polyExp_Normalized.csv')
-X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]','LPxLT','LPxSS','LPxP','SSpxLT','SSpxSS','SSpxP']].values
+# df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_polyExp(6features)Normalized.csv')
+# X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]','LPxLT','LPxSS','LPxP','SSpxLT','SSpxSS','SSpxP']].values
+# y = df['Max Melt Pool Width [um]'].values
+
+df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_polyExp(12features)Normalized.csv')
+X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]','LPxLT','LPxSS','LPxP','SSpxLT','SSpxSS','SSpxP','LP2xLT','LP2xSS','LP2xP','SSp2xLT','SSp2xSS','SSp2xP']].values
 y = df['Max Melt Pool Width [um]'].values
 
 #,'SSpxP'
@@ -232,12 +236,13 @@ opt = pd.DataFrame(opt_data)
 
 
 ensemble_methods = [
-    ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(),random_state=42).fit(X, y)),
+    ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(), random_state=42).fit(X, y)),
     ('Linear Regression', LinearRegression()),
     ('Polynomial Regression', poly_reg_model.fit(poly_features, y)),
     ('Support Vector Regression', SVR(kernel='linear', C=.5)),
     ('KNN', KNeighborsRegressor(n_neighbors=2)),
-    ('Multi Layer Perception', MLPRegressor(activation='relu',hidden_layer_sizes=(10, 100),alpha=0.001,random_state=42,early_stopping=False)),
+    ('Multi Layer Perception',
+     MLPRegressor(activation='relu', hidden_layer_sizes=(10, 100), alpha=0.001, random_state=42, early_stopping=False)),
     ('Random Forest', RandomForestRegressor(n_estimators=100, random_state=42)),
     ('Gradient Boosting', GradientBoostingRegressor(n_estimators=100, random_state=42)),
     ('AdaBoost', AdaBoostRegressor(n_estimators=100, random_state=42)),
@@ -283,7 +288,8 @@ for name, model in ensemble_methods:
 
 
 
-opt.to_csv('All_ML_models_Results_v3_HpTuned_Poly_Width1.csv', index=False)
+# opt.to_csv('All_ML_models_Results_v3_Poly_Width(6features).csv',mode='w', index=False)
+opt.to_csv('All_ML_models_Results_v3_Poly_Width(12features).csv',mode='w', index=False)
 
 
 #!###############################################!#
@@ -294,8 +300,12 @@ opt.to_csv('All_ML_models_Results_v3_HpTuned_Poly_Width1.csv', index=False)
 
 
 # Load the dataset as an example
-df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_polyExp_Normalized.csv')
-X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]','LPxLT','LPxSS','LPxP','SSpxLT','SSpxSS','SSpxP']].values
+# df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_polyExp(6features)Normalized.csv')
+# X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]','LPxLT','LPxSS','LPxP','SSpxLT','SSpxSS','SSpxP']].values
+# y = df['Max Melt Pool Depth [um]'].values
+
+df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_polyExp(12features)Normalized.csv')
+X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]','LPxLT','LPxSS','LPxP','SSpxLT','SSpxSS','SSpxP','LP2xLT','LP2xSS','LP2xP','SSp2xLT','SSp2xSS','SSp2xP']].values
 y = df['Max Melt Pool Depth [um]'].values
 
 poly = PolynomialFeatures(degree=7, include_bias=False)
@@ -318,12 +328,13 @@ opt = pd.DataFrame(opt_data)
 
 # Create a list of ensemble regressors
 ensemble_methods = [
-    ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(),random_state=42).fit(X, y)),
+    ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(), random_state=42).fit(X, y)),
     ('Linear Regression', LinearRegression()),
     ('Polynomial Regression', poly_reg_model.fit(poly_features, y)),
     ('Support Vector Regression', SVR(kernel='linear', C=.5)),
     ('KNN', KNeighborsRegressor(n_neighbors=2)),
-    ('Multi Layer Perception', MLPRegressor(activation='relu',hidden_layer_sizes=(10, 100),alpha=0.001,random_state=42,early_stopping=False)),
+    ('Multi Layer Perception',
+     MLPRegressor(activation='relu', hidden_layer_sizes=(10, 100), alpha=0.001, random_state=42, early_stopping=False)),
     ('Random Forest', RandomForestRegressor(n_estimators=100, random_state=42)),
     ('Gradient Boosting', GradientBoostingRegressor(n_estimators=100, random_state=42)),
     ('AdaBoost', AdaBoostRegressor(n_estimators=100, random_state=42)),
@@ -369,4 +380,5 @@ for name, model in ensemble_methods:
 
 
 
-opt.to_csv('All_ML_models_Results_v3_HpTuned_Poly_Depth.csv', index=False)
+# opt.to_csv('All_ML_models_Results_v3_Poly_Depth(6features).csv', mode='w', index=False)
+opt.to_csv('All_ML_models_Results_v3_Poly_Depth(12features).csv', mode='w',index=False)
