@@ -42,13 +42,17 @@ c3 = []
 c4 = []
 c5 = []
 c6 = []
+c7 = []
+c8 = []
 opt_data = {
             'Laser Power [W]': c1,
             'Scanning Speed [mm/s]': c2,
             'Layer Thickness [um]': c3,
             'Spot Size [um]': c4,
             'Porosity [%]': c5,
-            'Max Melt Pool Width [um]': c6
+            'Max Melt Pool Width [um]': c6,
+            'Max Melt Pool Depth [um]': c7,
+            'Ratio': c8
             }
 opt = pd.DataFrame(opt_data)
 
@@ -60,7 +64,7 @@ for laserPower in np.arange(50,520,10):
             width = (ET_regressor.predict([[laserPower, scanningSpeed, layerThickness, spotSize, porosity]]))
             depth = (bagging_regressor.predict([[laserPower, scanningSpeed, layerThickness, spotSize, porosity]]))
             ratio = depth/width
-            if (width >= 2*spotSize) & (depth >= 1.5*layerThickness & depth<= 2*layerThickness) & (ratio >= 1 & ratio <= 1.2):
+            if (width >= 2*spotSize) & (1.5*layerThickness <= depth<= 2*layerThickness) & (1 <=  ratio <= 1.2):
                 opt = pd.concat([opt, pd.DataFrame.from_records([{
                                                                 'Laser Power [W]': laserPower,
                                                                 'Scanning Speed [mm/s]': scanningSpeed,
@@ -68,7 +72,8 @@ for laserPower in np.arange(50,520,10):
                                                                 'Spot Size [um]': spotSize,
                                                                 'Porosity [%]': porosity,
                                                                 'Max Melt Pool Width [um]': width.item(),
-                                                                'Max Melt Pool Depth [um]': depth.item()
+                                                                'Max Melt Pool Depth [um]': depth.item(),
+                                                                'Ratio': ratio
                                                                 }])])
                 print("Width:{}   Depth:{}" .format(width.item(), depth.item()))
 
