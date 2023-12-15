@@ -1,12 +1,2 @@
 model,best_score,best_params
-Guassian Process,-0.036600608740892854,"{'kernel': RationalQuadratic(alpha=1, length_scale=1), 'random_state': 42}"
-Linear Regression,-0.037683669115329145,{}
-Polynomial Regression,-0.044634928580490195,"{'C': 1, 'kernel': 'rbf'}"
-Support Vector Machine,-0.046676773947415186,"{'C': 1000.0, 'gamma': 1e-05, 'kernel': 'linear'}"
-KNN,-0.030514508553413654,{'n_neighbors': 3}
-Multi Layer Perception,-0.0431538753118435,"{'activation': 'identity', 'batch_size': 32, 'early_stopping': False, 'hidden_layer_sizes': 4, 'learning_rate': 'invscaling', 'max_iter': 500, 'random_state': 42}"
-Random Forest,-0.030643255519873392,"{'max_depth': 10, 'min_samples_split': 2, 'n_estimators': 50, 'random_state': 42}"
-Gradient Boosting,-0.033649759294132345,"{'learning_rate': 0.1, 'max_depth': 5, 'min_samples_split': 2, 'n_estimators': 200, 'random_state': 42}"
-AdaBoost,-0.03736147062931702,"{'base_estimator': LinearRegression(), 'learning_rate': 0.001, 'n_estimators': 10, 'random_state': 42}"
-Bagging,-0.028525981778574294,"{'base_estimator': DecisionTreeRegressor(), 'n_estimators': 10, 'random_state': 42}"
-extraTreesRegressor,-0.0216862094266364,"{'max_depth': 10, 'min_samples_split': 5, 'n_estimators': 100, 'random_state': 42}"
+Multi Layer Perception,-0.03656420231209685,"{'activation': 'relu', 'alpha': 0.001, 'hidden_layer_sizes': 300, 'max_iter': 600}"

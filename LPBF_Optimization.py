@@ -53,13 +53,14 @@ opt_data = {
 opt = pd.DataFrame(opt_data)
 
 for laserPower in np.arange(50,520,10):
-    for scanningSpeed in np.arange(0, 3200, 100):
-        for spotSize in np.arange(30, 250, 10):
+    for scanningSpeed in np.arange(0, 3200, 50):
+        for spotSize in np.arange(30, 250, 10):#try 5, not less
             layerThickness = 70
             porosity = 50
             width = (ET_regressor.predict([[laserPower, scanningSpeed, layerThickness, spotSize, porosity]]))
             depth = (bagging_regressor.predict([[laserPower, scanningSpeed, layerThickness, spotSize, porosity]]))
-            if (width >= 2*spotSize) & (depth >= 1.5*layerThickness):
+            ratio = depth/width
+            if (width >= 2*spotSize) & (depth >= 1.5*layerThickness & depth<= 2*layerThickness) & (ratio >= 1 & ratio <= 1.2):
                 opt = pd.concat([opt, pd.DataFrame.from_records([{
                                                                 'Laser Power [W]': laserPower,
                                                                 'Scanning Speed [mm/s]': scanningSpeed,
