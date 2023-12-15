@@ -45,20 +45,36 @@ opt_data = {'Model': c1,
             'RRSE':c6 }
 opt = pd.DataFrame(opt_data)
 
+# # Create a list of ensemble regressors
+# ensemble_methods = [
+#     ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(),random_state=42).fit(X, y)),
+#     ('Linear Regression', LinearRegression()),
+#     ('Polynomial Regression', poly_reg_model.fit(poly_features, y)),
+#     ('Support Vector Regression', SVR(kernel='linear', C=.5)),
+#     ('KNN', KNeighborsRegressor(n_neighbors=2)),
+#     ('Multi Layer Perception', MLPRegressor(activation='relu',hidden_layer_sizes=(10, 100),alpha=0.001,random_state=42,early_stopping=False)),
+#     ('Random Forest', RandomForestRegressor(n_estimators=100, random_state=42)),
+#     ('Gradient Boosting', GradientBoostingRegressor(n_estimators=100, random_state=42)),
+#     ('AdaBoost', AdaBoostRegressor(n_estimators=100, random_state=42)),
+#     ('Bagging', BaggingRegressor(n_estimators=100, random_state=42)),
+#     ('Extra Trees', ExtraTreesRegressor(n_estimators=100, random_state=42)),
+# ]
+
 # Create a list of ensemble regressors
 ensemble_methods = [
-    ('Gaussian Process', GaussianProcessRegressor(kernel=DotProduct() + WhiteKernel(),random_state=42).fit(X, y)),
+    ('Gaussian Process', GaussianProcessRegressor().fit(X, y)),
     ('Linear Regression', LinearRegression()),
     ('Polynomial Regression', poly_reg_model.fit(poly_features, y)),
-    ('Support Vector Regression', SVR(kernel='linear', C=.5)),
-    ('KNN', KNeighborsRegressor(n_neighbors=2)),
-    ('Multi Layer Perception', MLPRegressor(activation='relu',hidden_layer_sizes=(10, 100),alpha=0.001,random_state=42,early_stopping=False)),
-    ('Random Forest', RandomForestRegressor(n_estimators=100, random_state=42)),
-    ('Gradient Boosting', GradientBoostingRegressor(n_estimators=100, random_state=42)),
-    ('AdaBoost', AdaBoostRegressor(n_estimators=100, random_state=42)),
-    ('Bagging', BaggingRegressor(n_estimators=100, random_state=42)),
-    ('Extra Trees', ExtraTreesRegressor(n_estimators=100, random_state=42)),
+    ('Support Vector Regression', SVR()),
+    ('KNN', KNeighborsRegressor()),
+    ('Multi Layer Perception', MLPRegressor()),
+    ('Random Forest', RandomForestRegressor()),
+    ('Gradient Boosting', GradientBoostingRegressor()),
+    ('AdaBoost', AdaBoostRegressor()),
+    ('Bagging', BaggingRegressor()),
+    ('Extra Trees', ExtraTreesRegressor()),
 ]
+
 k = 10
 # Compare ensemble methods using cross-validation
 for name, model in ensemble_methods:
@@ -98,7 +114,7 @@ for name, model in ensemble_methods:
 
 
 
-opt.to_csv('All_ML_models_Results_v2_Depth.csv',mode='w', index=False)
+# opt.to_csv('All_ML_models_Results_v2_Depth.csv',mode='w', index=False)
 
 print("GaussianProcessRegressor ")
 print(GaussianProcessRegressor().get_params())
