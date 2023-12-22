@@ -28,9 +28,9 @@ synthetic_data = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LP
 # fig.show()
 # report.get_score()
 
-# from table_evaluator import load_data, TableEvaluator
-# table_evaluator = TableEvaluator(real_data, synthetic_data)
-# table_evaluator.visual_evaluation()
+from table_evaluator import load_data, TableEvaluator
+table_evaluator = TableEvaluator(real_data, synthetic_data)
+table_evaluator.visual_evaluation()
 
 from sdmetrics.reports.single_table import QualityReport
 

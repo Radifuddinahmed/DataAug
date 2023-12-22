@@ -63,7 +63,9 @@ for laserPower in np.arange(50,520,10):
             porosity = 50
             width = (ET_regressor.predict([[laserPower, scanningSpeed, layerThickness, spotSize, porosity]]))
             depth = (bagging_regressor.predict([[laserPower, scanningSpeed, layerThickness, spotSize, porosity]]))
-            ratio = depth/width
+            ratio = depth.item()/width.item()
+            print(type(ratio))
+            print(ratio)
             if (width >= 2*spotSize) & (1.5*layerThickness <= depth<= 2*layerThickness) & (1 <=  ratio <= 1.2):
                 opt = pd.concat([opt, pd.DataFrame.from_records([{
                                                                 'Laser Power [W]': laserPower,
@@ -76,6 +78,7 @@ for laserPower in np.arange(50,520,10):
                                                                 'Ratio': ratio
                                                                 }])])
                 print("Width:{}   Depth:{}" .format(width.item(), depth.item()))
+
 
 
 
