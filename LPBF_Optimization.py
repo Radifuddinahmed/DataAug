@@ -19,19 +19,79 @@ from sklearn.svm import SVR
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.tree import DecisionTreeRegressor
+# Import necessary libraries
+import numpy as np
+import pandas as pd
+
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_predict
+from sklearn.model_selection import cross_val_predict, KFold
+from sklearn.metrics import r2_score
+from sklearn.ensemble import (
+    RandomForestRegressor,
+    GradientBoostingRegressor,
+    AdaBoostRegressor,
+    BaggingRegressor,
+    ExtraTreesRegressor,
+)
+from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.gaussian_process.kernels import DotProduct, WhiteKernel
+from sklearn.linear_model import LinearRegression
+from sklearn.svm import SVR
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.neural_network import MLPRegressor
+from sklearn.tree import DecisionTreeRegressor
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import (
+    RandomForestRegressor,
+    GradientBoostingRegressor,
+    AdaBoostRegressor,
+    BaggingRegressor,
+    ExtraTreesRegressor,
+)
+from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.gaussian_process.kernels import DotProduct, WhiteKernel
+from sklearn.gaussian_process.kernels import RBF, ConstantKernel as C, Matern, ExpSineSquared, RationalQuadratic
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+from sklearn.model_selection import cross_val_predict
+from sklearn.model_selection import cross_val_score
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.neural_network import MLPRegressor
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.svm import SVR
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.gaussian_process.kernels import RBF
+from sklearn.gaussian_process.kernels import RationalQuadratic
+from sklearn.model_selection import cross_val_score, KFold
+from datetime import datetime
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+
+
+import timeit
+start = timeit.default_timer()
+
 # Load the dataset as an example
 df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_Original.csv')
 X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]']].values
 y1 = df['Max Melt Pool Width [um]'].values
 y2 = df['Max Melt Pool Depth [um]'].values
 
+
 # Create an Extra Trees Regressor
-ET_regressor = ExtraTreesRegressor(max_depth=10,min_samples_split=5,n_estimators=10, random_state=42)
+ET_regressor = ExtraTreesRegressor(
+                                n_estimators=10, max_depth=None,
+                                min_samples_split=2, min_samples_leaf=1,
+                                random_state=42,
+)
 ET_regressor.fit(X, y1)
 
-# Create a Bagging Regressor
-bagging_regressor = BaggingRegressor(n_estimators=100, random_state=42)
-bagging_regressor.fit(X, y2)
+# Create a Gaussian Process Regressor
+GP_regressor = GaussianProcessRegressor(C(1.0, (1e-3, 1e3)) * Matern(1.0, (1e-2, 1e2), nu=0.5))
+GP_regressor.fit(X, y2)
 
 
 
@@ -62,7 +122,7 @@ for laserPower in np.arange(50,520,10):
             layerThickness = 70
             porosity = 50
             width = (ET_regressor.predict([[laserPower, scanningSpeed, layerThickness, spotSize, porosity]]))
-            depth = (bagging_regressor.predict([[laserPower, scanningSpeed, layerThickness, spotSize, porosity]]))
+            depth = (GP_regressor.predict([[laserPower, scanningSpeed, layerThickness, spotSize, porosity]]))
             ratio = depth.item()/width.item()
             print(type(ratio))
             print(ratio)
@@ -70,7 +130,7 @@ for laserPower in np.arange(50,520,10):
                 opt = pd.concat([opt, pd.DataFrame.from_records([{
                                                                 'Laser Power [W]': laserPower,
                                                                 'Scanning Speed [mm/s]': scanningSpeed,
-                                                                'Layer Thickness [um]': spotSize,
+                                                                'Layer Thickness [um]': layerThickness,
                                                                 'Spot Size [um]': spotSize,
                                                                 'Porosity [%]': porosity,
                                                                 'Max Melt Pool Width [um]': width.item(),
@@ -83,4 +143,9 @@ for laserPower in np.arange(50,520,10):
 
 
 opt.to_csv('LPBF_optimization.csv',mode='w', index=False)
+
+
+stop = timeit.default_timer()
+
+print('Time: ', stop - start)
 

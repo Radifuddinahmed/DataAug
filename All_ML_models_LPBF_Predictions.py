@@ -19,32 +19,33 @@ from sklearn.linear_model import LinearRegression
 from sklearn.svm import SVR
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.neural_network import MLPRegressor
+import timeit
+start = timeit.default_timer()
 
-
-# Load the dataset as an example
-df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_Original_Width.csv')
-X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]']].values
-y = df['Max Melt Pool Width [um]'].values
-
-from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-
-# Create a Random Forest Regressor
-rf_regressor = RandomForestRegressor(n_estimators=100, random_state=42)
-
-rf_regressor.fit(X_train, y_train)
-
-y_pred_cv = rf_regressor.predict(X_test)
-
-opt1 = pd.DataFrame({'actual':y_test})
-opt2= pd.DataFrame({'pred':y_pred_cv})
-opt3= pd.concat([opt1,opt2], axis=1)
-
-# append data frame to CSV file
-opt3.to_csv('LPBF_Pred_RF_Width.csv', mode='w', index=False, header=False)
-
-# print message
-print("Data appended successfully.")
+# # Load the dataset as an example
+# df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_Original_Width.csv')
+# X = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]']].values
+# y = df['Max Melt Pool Width [um]'].values
+#
+# from sklearn.model_selection import train_test_split
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+#
+# # Create a Random Forest Regressor
+# rf_regressor = RandomForestRegressor(n_estimators=100, random_state=42)
+#
+# rf_regressor.fit(X_train, y_train)
+#
+# y_pred_cv = rf_regressor.predict(X_test)
+#
+# opt1 = pd.DataFrame({'actual':y_test})
+# opt2= pd.DataFrame({'pred':y_pred_cv})
+# opt3= pd.concat([opt1,opt2], axis=1)
+#
+# # append data frame to CSV file
+# opt3.to_csv('LPBF_Pred_RF_Width.csv', mode='w', index=False, header=False)
+#
+# # print message
+# print("Data appended successfully.")
 
 
 # Load the dataset as an example
@@ -157,3 +158,9 @@ prediction_et_depth = ET_regressor.predict(val_data)
 # print message
 print("depth et: ")
 print(prediction_et_depth)
+
+
+
+stop = timeit.default_timer()
+
+print('Time: ', stop - start)

@@ -50,7 +50,7 @@ X=df.iloc[:, :-1]
 y=df.iloc[:, -1]
 
 # Specify different hyperparameter combinations
-hidden_layer_sizes_values = [50, 100] #default 100
+hidden_layer_sizes_values = [50, 100, 150, 200] #default 100
 activation_values = ['tanh', 'logistic', 'relu', 'identity'] #default relu
 solver_values = ['lbfgs', 'sgd', 'adam'] #default adam
 alpha_values = [.00001, .0001, .001, .01] #default 0.0001

@@ -46,10 +46,14 @@ y = df.iloc[:, -1]
 
 # Specify different hyperparameter combinations
 
-n_estimators_values = [10, 20, 50, 100, 200, 500, 1000, 1200, 1500, 1800, 1900, 2000, 2100] #default 100
-max_depth_values = [1, 2, 5, 8, 13, 21, 34, 53, 54, 55, 89, None] #default None
-min_samples_split_values = [ 2, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377] #default 2
-min_samples_leaf_values = [1, 2, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377]  #default 1
+n_estimators_values = [100] #default 100
+#10 , 20, 50, 100, 200, 500, 1000, 1200, 1500, 1800, 1900, 2000, 2100
+max_depth_values = [None] #default None
+# 1, 2, 5, 8, 13, 21, 34, 53, 54, 55, 89,
+min_samples_split_values = [ 2 ] #default 2
+#, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377
+min_samples_leaf_values = [1, 2,3,4,5,6,7,8,9,10,15,20,25,30,35,40]  #default 1
+# 1, 2, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377
 
 # n_estimators_values = [100, 200, 300] #default 100
 # max_depth_values = [None, 3, 5, 7, 10] #default None
@@ -65,7 +69,7 @@ for n_estimators in n_estimators_values:
             for min_samples_leaf in min_samples_leaf_values:
                 model = ExtraTreesRegressor(n_estimators= n_estimators,
                                             max_depth= max_depth,
-                                         min_samples_split= min_samples_split,
+                                            min_samples_split= min_samples_split,
                                             min_samples_leaf= min_samples_leaf,
                                             random_state=42,
                                             # n_estimators=100,
@@ -127,6 +131,6 @@ poly_results = pd.DataFrame(poly_list)
 # Save results to a CSV file
 
 timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-filename = f'LPBF_HP_ExtraTrees_results_{output}_{timestamp}.csv'
+filename = f'LPBF_HP_ExtraTrees_results_{output}_minSamLeaf_{timestamp}.csv'
 
 poly_results.to_csv(filename, index=False)

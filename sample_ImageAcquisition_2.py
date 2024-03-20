@@ -37,7 +37,7 @@ def main():
     ##################################################################
 
     deviceId = 0                        # Set "0" if you use only 1 head.
-    ysize = 2000                        # Number of Y lines.
+    ysize = 2                        # Number of Y lines.
     timeout_sec = 5                     # Timeout value for the acquiring image
     use_external_batchStart = False     # 'True' if you start batch externally.
 
@@ -56,10 +56,13 @@ def main():
     # Ethernet open
     res = LJXAwrap.LJX8IF_EthernetOpen(0, ethernetConfig)
     print("LJXAwrap.LJX8IF_EthernetOpen:", hex(res))
+
+
     if res != 0:
         print("Failed to connect contoller.")
         print("Exit the program.")
         sys.exit()
+
 
     # Initialize Hi-Speed Communication
     my_callback_s_a = LJXAwrap.LJX8IF_CALLBACK_SIMPLE_ARRAY(callback_s_a)
@@ -165,18 +168,18 @@ def main():
         plt.subplots_adjust(hspace=0.5)
 
         # Height image display
-        ax1 = fig.add_subplot(3, 1, 1)
-        img1 = PIL.Image.new('I', (xsize, ysize))
-        img1.putdata(list(map(int, z_val)))
-        im_list1 = numpy.asarray(img1)
-
-        ax1.imshow(im_list1,
-                   cmap='gray',
-                   vmin=0,
-                   vmax=65535,
-                   interpolation='none')
-
-        plt.title("Height Image")
+        # ax1 = fig.add_subplot(3, 1, 1)
+        # img1 = PIL.Image.new('I', (xsize, ysize))
+        # img1.putdata(list(map(int, z_val)))
+        # im_list1 = numpy.asarray(img1)
+        #
+        # ax1.imshow(im_list1,
+        #            cmap='gray',
+        #            vmin=0,
+        #            vmax=65535,
+        #            interpolation='none')
+        #
+        # plt.title("Height Image")
 
         # Luminance image display
         ax2 = fig.add_subplot(3, 1, 2)

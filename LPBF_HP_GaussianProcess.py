@@ -52,7 +52,8 @@ degrees = [
     C(1.0, (1e-3, 1e3)) * ExpSineSquared(1.0, 5.0, periodicity_bounds=(1e-2, 1e2)),
     C(1.0, (1e-3, 1e3)) * RationalQuadratic(1.0, 1.0, alpha_bounds=(1e-2, 1e2)),
     DotProduct() + WhiteKernel(),
-    RationalQuadratic(), RBF()
+    RationalQuadratic(),
+    RBF()
 ]
 
 # Perform 10-fold cross-validation for kNN

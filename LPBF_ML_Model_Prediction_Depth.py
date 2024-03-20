@@ -49,6 +49,9 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
+import timeit
+start = timeit.default_timer()
+
 #!###############################################!#
 #!                                               !#
 #!####################  Depth ###################!#
@@ -56,7 +59,8 @@ from sklearn.preprocessing import StandardScaler
 #!###############################################!#
 
 # Load the dataset as an example
-df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_Original_Depth.csv')
+# df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_Original_Depth.csv')
+df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_Original - Copy.csv')
 X1 = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]']].values
 y1 = df['Max Melt Pool Depth [um]'].values
 
@@ -81,28 +85,29 @@ GP_regressor = GaussianProcessRegressor(C(1.0, (1e-3, 1e3)) * Matern(1.0, (1e-2,
 #     base_estimator="deprecated",
 # )
 
-GP_regressor.fit(X1_train, y1_train)
-
-# Perform K-fold cross-validated predictions
-y1_pred_cv = GP_regressor.predict(X1_test)
-
-
-opt11 = pd.DataFrame({'actual': y1_test})
-opt21= pd.DataFrame({'pred':y1_pred_cv})
-opt31= pd.concat([opt11,opt21], axis=1)
-
-# append data frame to CSV file
-opt31.to_csv('LPBF_ML_Model_Prediction_Depth_GP.csv', mode='w', index=False, header=False)
-
-# print message
-print("Data appended successfully.")
+# GP_regressor.fit(X1_train, y1_train)
+#
+# # Perform K-fold cross-validated predictions
+# y1_pred_cv = GP_regressor.predict(X1_test)
+#
+#
+# opt11 = pd.DataFrame({'actual': y1_test})
+# opt21= pd.DataFrame({'pred':y1_pred_cv})
+# opt31= pd.concat([opt11,opt21], axis=1)
+#
+# # append data frame to CSV file
+# opt31.to_csv('LPBF_ML_Model_Prediction_Depth_GP.csv', mode='w', index=False, header=False)
+#
+# # print message
+# print("Data appended successfully.")
 
 ###########################
 # code for validation table   Depth
 ###########################
 
 # Load the dataset as an example - depth - et
-df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_Original_Depth.csv')
+# df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_Original_Depth.csv')
+df = pd.read_csv('D:\PhD_ResearchWork\ASME_Journal\datasets\Final\LPBF_Dataset_Original - Copy.csv')
 X2 = df[['Laser Power [W]', 'Scanning Speed [mm/s]', 'Layer Thickness [um]', 'Spot Size [um]', 'Porosity [%]']].values
 y2 = df['Max Melt Pool Depth [um]'].values
 
@@ -119,4 +124,9 @@ prediction_GP_depth = GP_regressor.predict(val_data)
 
 # print message
 print("depth GP: ")
+## in dataset 189.5
 print(prediction_GP_depth)
+
+stop = timeit.default_timer()
+
+print('Time: ', stop - start)

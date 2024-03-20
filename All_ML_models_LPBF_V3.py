@@ -22,6 +22,10 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.gaussian_process.kernels import RBF
 from sklearn.gaussian_process.kernels import RationalQuadratic
 
+
+import timeit
+start = timeit.default_timer()
+
 #!###############################################!#
 #!                                               !#
 #!####################  Width      ##############!#
@@ -382,3 +386,8 @@ for name, model in ensemble_methods:
 
 # opt.to_csv('All_ML_models_Results_v3_Poly_Depth(6features).csv', mode='w', index=False)
 opt.to_csv('All_ML_models_Results_v3_Poly_Depth(12features).csv', mode='w',index=False)
+
+
+stop = timeit.default_timer()
+
+print('Time: ', stop - start)
