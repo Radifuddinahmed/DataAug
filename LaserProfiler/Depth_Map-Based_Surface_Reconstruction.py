@@ -86,7 +86,25 @@ def point_cloud_to_depth_map(pcd, resolution=global_resolution):
 
     return depth_map, point_map
 
+def interpolate_missing_depths(depth_map):
+    rows, cols = depth_map.shape
+    for i in range(rows):
+        for j in range(cols):
+            if np.isnan(depth_map[i, j]):
+                # Gather neighboring depth values
+                valid_depths = []
+                for di in [-1, 0, 1]:
+                    for dj in [-1, 0, 1]:
+                        if 0 <= i + di < rows and 0 <= j + dj < cols and not np.isnan(depth_map[i + di, j + dj]):
+                            valid_depths.append(depth_map[i + di, j + dj])
+                # If there are valid neighboring depths, set the current depth to their average
+                if valid_depths:
+                    depth_map[i, j] = np.mean(valid_depths)
+    return depth_map
+
 def reconstruct_surface_from_depth_map(depth_map, resolution=global_resolution):
+    # Interpolate missing depths in the depth map to reduce gaps in the final mesh.
+    depth_map = interpolate_missing_depths(depth_map)
     # Determine the number of rows and columns in the depth map.
     rows, cols = depth_map.shape
     verts = []  # List to store vertex coordinates.
