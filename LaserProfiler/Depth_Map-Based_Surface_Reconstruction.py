@@ -187,6 +187,26 @@ def visualize_mesh(verts, faces):
     vis.run()
     vis.destroy_window()
 
+def export_mesh_to_stl(verts, faces, file_path="output_mesh.stl"):
+    """
+    Exports the mesh defined by vertices and faces to an STL file.
+
+    Parameters:
+    - verts: np.ndarray. The vertices of the mesh.
+    - faces: np.ndarray. The faces of the mesh.
+    - file_path: str. The path to the output STL file.
+    """
+    # Create the mesh object with the given vertices and faces
+    mesh = o3d.geometry.TriangleMesh()
+    mesh.vertices = o3d.utility.Vector3dVector(verts)
+    mesh.triangles = o3d.utility.Vector3iVector(faces)
+    mesh.compute_vertex_normals()  # Optional: Computes vertex normals for better shading
+
+    # Export the mesh to an STL file in binary format
+    o3d.io.write_triangle_mesh(file_path, mesh)
+    print(f"Mesh exported to STL file at: {file_path}")
+
+
 # Input file path for the point cloud data.
 pcd_file_path = "SensorPcdDataGenerator20240317181729.pcd"
 
@@ -197,7 +217,9 @@ depth_map, point_map = load_pcd_and_generate_depth_map(pcd_file_path, resolution
 verts, faces = reconstruct_surface_from_depth_map(depth_map, resolution=global_resolution)
 
 # refine the mesh using Laplacian smoothing to create a smoother appearance.
-smoothed_verts = laplacian_smoothing(verts, faces, alpha=0.0, iterations=0)
+smoothed_verts = laplacian_smoothing(verts, faces, alpha=0.0, iterations=1)
 
 # Visualize the original or smoothed mesh.
 visualize_mesh(smoothed_verts, faces)
+
+export_mesh_to_stl(smoothed_verts, faces, "./STL_Renders/Depth_Based_STL_output.stl")
